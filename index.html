@@ -1,0 +1,1482 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Quét Thẻ Giấy Toán 12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+:root{
+  --bg:#eaf2ef; --surface:#ffffff; --surface2:#f2f7f5; --ink:#12211d; --muted:#5b6b66;
+  --line:#cfe0da; --teal:#0f766e; --teal2:#0d9488; --teal-dark:#115e59;
+  --amber:#f59e0b; --coral:#e85d3d; --red:#dc2626; --blue:#2563eb; --green:#16a34a; --gold:#b45309;
+  --radius:16px; --shadow:0 8px 28px rgba(18,33,29,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0a1411; --surface:#122019; --surface2:#182a23; --ink:#eef5f2; --muted:#9db3ac;
+    --line:#27443a; --shadow:0 8px 28px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+h1,h2,h3{line-height:1.25;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+img{max-width:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px 48px}
+.topbar{background:linear-gradient(120deg,var(--teal-dark),var(--teal) 55%,#15803d);color:#fff;padding:20px 0 16px}
+.topbar h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.02em}
+.topbar p{margin:6px 0 0;opacity:.92;max-width:760px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.tabs{position:sticky;top:0;z-index:40;display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;background:var(--bg)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1 1 auto;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 12px;font-weight:700;font-size:14px;white-space:nowrap;box-shadow:0 2px 8px rgba(18,33,29,.05);text-align:center}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab .n{display:inline-block;min-width:22px;text-align:center;background:var(--amber);color:#231303;border-radius:999px;padding:1px 6px;font-size:12px;margin-left:6px}
+section.panel{display:none}
+section.panel.active{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
+.card h2{font-size:19px;font-weight:800}
+.card h3{font-size:16px;font-weight:800}
+.lead{color:var(--muted);font-size:14px;margin:6px 0 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+label{font-weight:700;font-size:13px;display:block;margin:0 0 6px}
+input[type=text],input[type=number],select,textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;background:var(--surface2);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--teal2)}
+textarea{min-height:110px;resize:vertical}
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:11px;padding:11px 16px;font-weight:700;font-size:14px;background:var(--teal);color:#fff}
+.btn:hover{filter:brightness(1.07)}
+.btn.secondary{background:var(--surface2);color:var(--ink);border:1.5px solid var(--line)}
+.btn.warn{background:var(--coral)}
+.btn.gold{background:var(--amber);color:#231303}
+.btn.small{padding:8px 12px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hint{font-size:13px;color:var(--muted)}
+.warnbox{background:#fef3c7;color:#713f12;border:1px solid #fcd34d;border-radius:12px;padding:12px 14px;font-size:14px}
+@media (prefers-color-scheme: dark){.warnbox{background:#3a2a08;color:#fde68a;border-color:#92600a}}
+.errbox{background:#fee2e2;color:#7f1d1d;border:1px solid #fca5a5;border-radius:12px;padding:12px 14px;font-size:14px}
+@media (prefers-color-scheme: dark){.errbox{background:#3f1212;color:#fecaca;border-color:#7f1d1d}}
+.okbox{background:#dcfce7;color:#14532d;border:1px solid #86efac;border-radius:12px;padding:12px 14px;font-size:14px}
+@media (prefers-color-scheme: dark){.okbox{background:#0f2e1a;color:#bbf7d0;border-color:#166534}}
+details{border:1px dashed var(--line);border-radius:12px;padding:12px 14px;margin-top:12px}
+summary{font-weight:700;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.student-row{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.cardnum{width:44px;height:44px;flex:0 0 auto;display:grid;place-items:center;background:var(--ink);color:var(--bg);font-weight:900;font-size:17px;border-radius:11px}
+.student-name{font-weight:700;flex:1 1 120px;min-width:110px}
+.iconbtn{border:1.5px solid var(--line);background:var(--surface2);border-radius:9px;padding:7px 10px;font-weight:700;font-size:13px}
+.qitem{border:1px solid var(--line);border-radius:13px;padding:14px;margin-bottom:12px;background:var(--surface2)}
+.qitem.correct-mark{outline:2px solid var(--green)}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:800}
+.qtext{font-size:15.5px;margin:8px 0}
+.opt{display:flex;gap:9px;padding:7px 9px;border-radius:9px;font-size:14.5px;align-items:flex-start}
+.opt .letter{flex:0 0 auto;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;font-weight:800;font-size:13px;color:#fff}
+.opt.A .letter{background:var(--red)}.opt.B .letter{background:var(--blue)}.opt.C .letter{background:var(--green)}.opt.D .letter{background:var(--gold)}
+.opt.is-correct{background:rgba(22,163,74,.14);font-weight:700}
+.qfig{margin:10px 0;cursor:zoom-in}
+.qfig img{border:1px solid var(--line);border-radius:10px;background:#fff;max-height:280px;display:block}
+.qfig figcaption{font-size:12.5px;color:var(--muted);margin-top:5px}
+.pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700}
+.pill.green{background:#dcfce7;color:#14532d}.pill.red{background:#fee2e2;color:#7f1d1d}.pill.grey{background:var(--surface2);color:var(--muted)}
+@media (prefers-color-scheme: dark){.pill.green{background:#0f2e1a;color:#bbf7d0}.pill.red{background:#3f1212;color:#fecaca}}
+/* ---- Paper cards (always white/black for printing) ---- */
+.cards-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:end}
+.cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+.cards-grid.compact{grid-template-columns:repeat(3,1fr)}
+.paper-card{position:relative;background:#fff;color:#111;border:3px solid #111;border-radius:14px;aspect-ratio:1/1;padding:9% 7% 7%;text-align:center;overflow:hidden;page-break-inside:avoid}
+.paper-card .edge{position:absolute;font-weight:900;line-height:1}
+.paper-card .edge.a{top:4%;left:50%;transform:translateX(-50%);font-size:clamp(22px,4.5vw,34px)}
+.paper-card .edge.b{top:50%;right:4%;transform:translateY(-50%);font-size:clamp(22px,4.5vw,34px)}
+.paper-card .edge.c{bottom:4%;left:50%;transform:translateX(-50%);font-size:clamp(22px,4.5vw,34px)}
+.paper-card .edge.d{top:50%;left:4%;transform:translateY(-50%);font-size:clamp(22px,4.5vw,34px)}
+.paper-card .edge small{display:block;font-size:9px;letter-spacing:.08em;font-weight:700;color:#555}
+.paper-card .orient{position:absolute;top:6%;right:6%;width:13%;aspect-ratio:1;background:#111;border-radius:3px}
+.paper-card .orient::after{content:"";position:absolute;inset:28%;background:#fff;border-radius:50%}
+.paper-card .num{font-size:clamp(44px,9vw,76px);font-weight:900;line-height:1;margin-top:16%}
+.paper-card .sname{font-size:clamp(12px,2.4vw,17px);font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.paper-card .foot{position:absolute;bottom:9%;left:0;right:0;font-size:9.5px;color:#666;letter-spacing:.05em}
+.paper-card .cut{position:absolute;top:6%;left:6%;font-size:10px;color:#999}
+/* ---- Scan / live session ---- */
+.liveq{border:2px solid var(--teal);border-radius:18px;padding:18px;background:var(--surface)}
+.liveq .qtext{font-size:clamp(18px,3.4vw,24px);font-weight:600}
+.liveopts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:640px){.liveopts{grid-template-columns:1fr}}
+.liveopt{border:2px solid var(--line);border-radius:13px;padding:13px 14px;font-size:16px;display:flex;gap:10px;align-items:flex-start;background:var(--surface2)}
+.liveopt.reveal-correct{border-color:var(--green);background:rgba(22,163,74,.13)}
+.liveopt .letter{flex:0 0 auto;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:900}
+.liveopt.A .letter{background:var(--red)}.liveopt.B .letter{background:var(--blue)}.liveopt.C .letter{background:var(--green)}.liveopt.D .letter{background:var(--gold)}
+.timerbar{height:12px;background:var(--surface2);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:12px}
+.timerbar i{display:block;height:100%;background:var(--teal2);transition:width .5s linear}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+@media(max-width:640px){.statrow{grid-template-columns:repeat(2,1fr)}}
+.stat{border:1px solid var(--line);border-radius:13px;padding:12px;text-align:center;background:var(--surface2)}
+.stat b{display:block;font-size:24px}
+.stat span{font-size:12.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.ansbtn{width:46px;height:46px;border-radius:12px;border:2px solid var(--line);font-weight:900;font-size:16px;background:var(--surface)}
+.ansbtn.A.on{background:var(--red);color:#fff;border-color:var(--red)}
+.ansbtn.B.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ansbtn.C.on{background:var(--green);color:#fff;border-color:var(--green)}
+.ansbtn.D.on{background:var(--amber);color:#231303;border-color:var(--amber)}
+.scanrow{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.scanrow .student-name{flex:1 1 100px}
+.scanrow .picked{font-weight:800;font-size:13px;min-width:86px}
+video#cam{width:100%;border-radius:14px;background:#000;aspect-ratio:4/3;object-fit:cover;display:block}
+.camframe{position:relative}
+.camframe .guide{position:absolute;inset:12% 8%;border:3px dashed #fff;border-radius:14px;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.28)}
+.camframe .guide span{position:absolute;left:50%;top:-26px;transform:translateX(-50%);background:#111;color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+canvas#shot{display:none}
+.rankrow{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line)}
+.rankpos{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:var(--surface2);border:1.5px solid var(--line);flex:0 0 auto}
+.rankrow.top1 .rankpos{background:var(--amber);color:#231303;border-color:var(--amber)}
+.bar{height:9px;border-radius:99px;background:var(--surface2);border:1px solid var(--line);overflow:hidden;flex:1}
+.bar i{display:block;height:100%;background:var(--teal2)}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;place-items:center;z-index:90;padding:18px}
+.lightbox.open{display:grid}
+.lightbox img{max-width:96vw;max-height:88vh;background:#fff;border-radius:10px}
+.lightbox button{position:absolute;top:14px;right:14px}
+.footer-note{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+@media print{
+  body{background:#fff}
+  .topbar,.tabs,.no-print,.footer-note{display:none !important}
+  .wrap{max-width:none;padding:0}
+  section.panel{display:none !important}
+  section.panel#print-area{display:block !important}
+  .card{box-shadow:none;border:none;padding:0}
+  .cards-grid{gap:10px}
+  .paper-card{border-radius:10px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap" style="padding-bottom:0">
+    <h1>Quét thẻ giấy — Toán 12</h1>
+    <p>Thầy tạo lớp, in mỗi học sinh một thẻ giấy có mã riêng. Học sinh giơ thẻ, xoay chữ A / B / C / D lên trên theo đáp án. Thầy quét bằng điện thoại, máy chấm ngay từng câu và tổng kết cả buổi.</p>
+    <div class="chips">
+      <span class="chip" id="chipClass">Lớp: chưa có học sinh</span>
+      <span class="chip" id="chipBank">Bộ đề: 28 câu</span>
+      <span class="chip" id="chipSession">Buổi chấm: chưa bắt đầu</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs no-print" role="tablist" aria-label="Các phần của app">
+    <button class="tab" data-tab="class" aria-selected="true">1 · Lớp học</button>
+    <button class="tab" data-tab="bank" aria-selected="false">2 · Bộ câu hỏi<span class="n" id="tabBankCount">28</span></button>
+    <button class="tab" data-tab="cards" aria-selected="false">3 · In thẻ giấy</button>
+    <button class="tab" data-tab="scan" aria-selected="false">4 · Quét &amp; chấm</button>
+    <button class="tab" data-tab="results" aria-selected="false">5 · Kết quả</button>
+  </nav>
+
+  <!-- ============ 1. CLASS ============ -->
+  <section class="panel active" id="sec-class">
+    <div class="card">
+      <h2>Danh sách lớp</h2>
+      <p class="lead">Mỗi học sinh được gán một số thẻ. Số thẻ in to giữa thẻ giấy — thầy nhìn số là biết học sinh nào, không cần nhớ tên khi chấm nhanh.</p>
+      <div class="grid2" style="margin-top:14px">
+        <div>
+          <label for="className">Tên lớp</label>
+          <input type="text" id="className" value="Lớp 12A1" />
+        </div>
+        <div>
+          <label for="newStudent">Thêm một học sinh</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="newStudent" placeholder="Ví dụ: Nguyễn Văn An" />
+            <button class="btn" id="addStudentBtn" type="button">Thêm</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <label for="bulkNames">Thêm nhiều học sinh cùng lúc — mỗi dòng một tên</label>
+        <textarea id="bulkNames" placeholder="Nguyễn Văn An&#10;Trần Thị Bình&#10;Lê Minh Châu"></textarea>
+        <div class="btnrow">
+          <button class="btn secondary" id="bulkAddBtn" type="button">Thêm các tên trên</button>
+          <button class="btn secondary" id="sampleClassBtn" type="button">Dùng lớp mẫu 24 học sinh</button>
+          <button class="btn secondary" id="clearClassBtn" type="button">Xóa cả lớp</button>
+        </div>
+        <p class="hint" id="bulkMsg"></p>
+        <p class="hint">Dữ liệu lớp chỉ nằm trong phiên mở trang này. Đóng trang là hết — thầy nên in thẻ ngay sau khi chốt danh sách.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2 id="rosterTitle">Học sinh trong lớp (0)</h2>
+      <p class="lead">Bấm vào số thẻ để đổi số nếu thầy đã có bộ thẻ in sẵn và muốn khớp số cũ.</p>
+      <div id="roster"></div>
+      <p class="hint" id="rosterEmpty">Chưa có học sinh nào. Thêm tên ở trên, hoặc dùng lớp mẫu để thử ngay.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2. QUESTION BANK ============ -->
+  <section class="panel" id="sec-bank">
+    <div class="card">
+      <h2>Nạp đề từ file Word (.docx) — như Zombie Toán 12</h2>
+      <p class="lead">Chỉ nhận file Word (.docx). File được đọc ngay trong trình duyệt, không gửi lên máy chủ. Nạp xong, kiểm tra kỹ ở bảng xem trước rồi mới bấm áp dụng.</p>
+      <div class="btnrow">
+        <button class="btn gold" id="pickDocxBtn" type="button">Nạp đề từ file Word (.docx)</button>
+        <button class="btn secondary" id="templateBtn" type="button">Tải file mẫu Word (.docx)</button>
+        <button class="btn secondary" id="restoreBtn" type="button">Khôi phục bộ đề gốc (28 câu)</button>
+      </div>
+      <input type="file" id="docxInput" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden />
+      <p class="hint" id="bankStatus">Đang dùng bộ đề gốc: 28 câu Toán 12 học kì 1. Bộ đề mới nạp chỉ dùng trong phiên này, đóng trang là hết.</p>
+      <details>
+        <summary>Định dạng file Word được nhận — bấm để xem mẫu</summary>
+        <div style="font-size:14px;margin-top:10px">
+          <p>Mỗi câu viết: <b>Câu 1:</b> nội dung câu hỏi. Xuống dòng, mỗi đáp án một dòng: <b>A.</b> … <b>B.</b> … <b>C.</b> … <b>D.</b> … Rồi dòng <b>Đáp án: B</b>. Đáp án đúng cũng có thể gạch chân đáp án đó trong Word.</p>
+          <p>Công thức gõ dạng LaTeX, để trần hoặc trong <b>$...$</b>, ví dụ: <b>$y=\frac{ax+b}{cx+d}$</b>, <b>\lim_{x\to 2}</b>, <b>\sqrt{x}</b>, <b>\int</b>, <b>\mathbb{R}</b>. App vẽ thành công thức thật.</p>
+          <p>Hình vẽ (đồ thị, bảng biến thiên) chèn dạng ảnh PNG/JPEG, mỗi hình một đoạn riêng, sẽ hiện ngay dưới đề bài của đúng câu đó. Ảnh WMF/EMF của MathType trình duyệt không mở được — app sẽ báo rõ từng câu, thầy chuyển hình đó sang PNG trong Word rồi nạp lại.</p>
+          <p>Phần giải thích (nếu có) viết sau đáp án: <b>Giải thích:</b> … — sẽ hiện khi thầy chiếu đáp án sau mỗi câu.</p>
+        </div>
+      </details>
+      <div id="importMsg" style="margin-top:12px"></div>
+      <div id="importPreview"></div>
+      <div class="btnrow" id="importActions" style="display:none">
+        <button class="btn" id="applyReplaceBtn" type="button">Áp dụng — thay toàn bộ bộ đề</button>
+        <button class="btn secondary" id="applyAppendBtn" type="button">Thêm vào cuối bộ đề hiện tại</button>
+        <button class="btn secondary" id="cancelImportBtn" type="button">Bỏ file vừa nạp</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Bộ đề đang dùng (<span id="bankCountLabel">28</span> câu)</h2>
+      <p class="lead">Xem trước đúng như học sinh sẽ thấy khi thầy chiếu câu hỏi. Công thức đã vẽ thành công thức thật; hình vẽ (nếu có) hiện dưới đề bài, bấm vào để phóng to.</p>
+      <div id="bankList" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. CARDS ============ -->
+  <section class="panel" id="sec-cards">
+    <div class="card no-print">
+      <h2>In bộ thẻ giấy</h2>
+      <p class="lead">In trên giấy cứng (giấy A4 dày hoặc bìa), cắt theo viền. Mỗi học sinh giữ một thẻ cả buổi. Hướng dẫn học sinh trước giờ học:</p>
+      <ul style="font-size:14.5px;margin:10px 0 0;padding-left:20px">
+        <li><b>Xoay chữ đáp án lên trên.</b> Muốn chọn A thì xoay cho chữ A ở cạnh trên cùng; chọn B thì chữ B lên trên, tương tự C, D.</li>
+        <li>Giơ thẻ thẳng, mặt số hướng về phía thầy, giữ yên đến khi thầy nói “đã nhận”.</li>
+        <li>Ô vuông đen ở góc là ô định vị để máy quét nhận hướng thẻ — đừng che, đừng vẽ thêm vào đó.</li>
+      </ul>
+      <div class="cards-toolbar" style="margin-top:14px">
+        <div>
+          <label for="cardSize">Cỡ thẻ khi in</label>
+          <select id="cardSize">
+            <option value="large">Lớn — 4 thẻ / trang A4</option>
+            <option value="compact">Vừa — 6 thẻ / trang A4</option>
+          </select>
+        </div>
+        <button class="btn" id="printBtn" type="button">In / lưu PDF bộ thẻ</button>
+        <button class="btn secondary" id="previewPrintBtn" type="button">Xem riêng trang in</button>
+      </div>
+      <p class="hint">Trang in chỉ còn bộ thẻ. Trên điện thoại, dùng “Chia sẻ → In” của trình duyệt nếu nút in không mở được hộp thoại.</p>
+    </div>
+    <div id="cardsArea">
+      <div class="cards-grid" id="cardsGrid"></div>
+      <p class="hint no-print" id="cardsEmpty">Chưa có học sinh nên chưa có thẻ nào. Thêm học sinh ở phần “Lớp học” trước.</p>
+    </div>
+  </section>
+
+  <!-- ============ 4. SCAN ============ -->
+  <section class="panel" id="sec-scan">
+    <div class="card">
+      <h2>Buổi chấm trực tiếp</h2>
+      <p class="lead">Chọn câu hỏi, chiếu lên màn hình cho cả lớp, học sinh giơ thẻ. Thầy quét từng thẻ bằng camera, hoặc chấm nhanh cả lớp bằng bảng bấm bên dưới — hai cách ghi vào cùng một bảng đáp án.</p>
+      <div class="grid2" style="margin-top:12px">
+        <div>
+          <label for="timePerQ">Thời gian mỗi câu</label>
+          <select id="timePerQ">
+            <option value="15">15 giây</option>
+            <option value="30" selected>30 giây</option>
+            <option value="45">45 giây</option>
+            <option value="60">60 giây</option>
+          </select>
+        </div>
+        <div>
+          <label for="startAt">Bắt đầu từ câu</label>
+          <select id="startAt"></select>
+        </div>
+      </div>
+      <div class="btnrow">
+        <button class="btn" id="startSessionBtn" type="button">Bắt đầu buổi chấm</button>
+        <button class="btn secondary" id="resetSessionBtn" type="button">Chấm lại từ đầu</button>
+      </div>
+      <p class="hint" id="sessionHint">Chưa bắt đầu. Cần ít nhất 1 học sinh và 1 câu hỏi.</p>
+    </div>
+
+    <div class="liveq" id="liveBox" style="display:none">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+        <span class="pill grey" id="liveCounter">Câu 1 / 28</span>
+        <span style="font-weight:900;font-size:22px" id="liveTimer">30s</span>
+      </div>
+      <div class="qtext" id="liveQText"></div>
+      <div id="liveQFig"></div>
+      <div class="liveopts" id="liveOpts"></div>
+      <div class="timerbar"><i id="timerFill" style="width:100%"></i></div>
+      <div class="statrow">
+        <div class="stat"><b id="statGot">0</b><span>Đã nhận thẻ</span></div>
+        <div class="stat"><b id="statCorrect">0</b><span>Trả lời đúng</span></div>
+        <div class="stat"><b id="statRate">—</b><span>Tỉ lệ đúng</span></div>
+        <div class="stat"><b id="statLeft">0</b><span>Chưa có thẻ</span></div>
+      </div>
+      <div id="liveExplain" style="display:none;margin-top:14px"></div>
+      <div class="btnrow">
+        <button class="btn gold" id="revealBtn" type="button">Chiếu đáp án đúng</button>
+        <button class="btn secondary" id="timerBtn" type="button">Dừng đồng hồ</button>
+        <button class="btn" id="nextQBtn" type="button">Câu tiếp theo</button>
+        <button class="btn warn" id="finishBtn" type="button">Kết thúc buổi chấm</button>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Quét từng thẻ bằng camera</h3>
+        <p class="lead">Chọn học sinh, đưa thẻ của em vào khung, bấm “Chụp &amp; nhận hướng”. Máy đọc ô định vị đen ở góc thẻ để biết chữ nào đang ở trên. Nếu máy đọc sai, thầy sửa bằng một lần bấm ở dưới — đáp án cuối cùng luôn do thầy chốt.</p>
+        <label for="scanStudent" style="margin-top:12px">Học sinh đang quét</label>
+        <select id="scanStudent"></select>
+        <div class="btnrow">
+          <button class="btn" id="camOnBtn" type="button">Mở camera sau</button>
+          <button class="btn secondary" id="camOffBtn" type="button" disabled>Tắt camera</button>
+        </div>
+        <div class="camframe" style="margin-top:12px">
+          <video id="cam" playsinline muted autoplay></video>
+          <div class="guide"><span>Đặt 1 thẻ vào khung, giữ thẳng</span></div>
+        </div>
+        <p class="hint" id="camMsg">Camera chưa mở. Trên điện thoại, trình duyệt sẽ hỏi quyền dùng camera — thầy bấm Cho phép.</p>
+        <div class="btnrow">
+          <button class="btn gold" id="snapBtn" type="button" disabled>Chụp &amp; nhận hướng thẻ</button>
+        </div>
+        <canvas id="shot" width="640" height="480"></canvas>
+        <div id="scanResult" style="margin-top:12px"></div>
+        <div id="scanConfirm" style="display:none;margin-top:10px">
+          <p style="font-weight:700;margin:0 0 8px">Đáp án ghi cho <span id="confirmName"></span>:</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="ansbtn A" data-confirm="A" type="button">A</button>
+            <button class="ansbtn B" data-confirm="B" type="button">B</button>
+            <button class="ansbtn C" data-confirm="C" type="button">C</button>
+            <button class="ansbtn D" data-confirm="D" type="button">D</button>
+            <button class="btn secondary small" id="clearScanBtn" type="button">Chưa rõ — bỏ qua</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Chấm nhanh cả lớp</h3>
+        <p class="lead">Thầy nhìn cả lớp giơ thẻ và bấm đáp án từng em. Bấm lại để đổi, bấm vào đáp án đang sáng để xóa. Bảng này dùng chung với camera.</p>
+        <div id="quickBoard"></div>
+        <p class="hint" id="quickEmpty">Chưa có học sinh. Thêm ở phần “Lớp học”.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. RESULTS ============ -->
+  <section class="panel" id="sec-results">
+    <div class="card">
+      <h2>Kết quả buổi chấm</h2>
+      <p class="lead" id="resultsLead">Chưa có buổi chấm nào. Bắt đầu chấm ở phần “Quét &amp; chấm”, kết quả sẽ tổng kết tại đây.</p>
+      <div class="btnrow">
+        <button class="btn" id="csvBtn" type="button">Tải bảng điểm (.csv)</button>
+        <button class="btn secondary" id="copySummaryBtn" type="button">Chép tóm tắt để gửi lớp</button>
+      </div>
+      <p class="hint" id="copyMsg"></p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Xếp hạng học sinh</h3>
+        <div id="ranking"></div>
+      </div>
+      <div class="card">
+        <h3>Từng câu hỏi</h3>
+        <div id="perQuestion"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Print-only area -->
+  <section class="panel" id="print-area" aria-hidden="true">
+    <div class="no-print" style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn secondary" id="backFromPrintBtn" type="button">← Quay lại xem thẻ</button>
+      <span class="hint">Đây là trang in — chỉ còn bộ thẻ. Bấm “In / lưu PDF” ở phần In thẻ giấy để in.</span>
+    </div>
+    <div class="cards-grid" id="printGrid"></div>
+  </section>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Hình phóng to">
+  <button class="btn" id="lightboxClose" type="button">Đóng</button>
+  <img id="lightboxImg" alt="Hình trong câu hỏi, phóng to" />
+</div>
+<p class="footer-note no-print">Quét thẻ giấy Toán 12 · Nạp đề Word, công thức LaTeX và hình vẽ hiển thị như trong file Word.</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+"use strict";
+/* ================= Helpers ================= */
+function el(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function escAttr(s){return esc(s).replace(/'/g,"&#39;")}
+
+function renderMathInText(text){
+  var raw = String(text==null?"":text);
+  if(!window.katex) return esc(raw);
+  // Split on $...$ first, then render bare LaTeX inside plain segments.
+  var parts = raw.split(/(\$[^$]+\$)/g);
+  var out = "";
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i];
+    if(!p) continue;
+    if(p.length>2 && p[0]==="$" && p[p.length-1]==="$"){
+      try{ out += katex.renderToString(p.slice(1,-1),{displayMode:false,throwOnError:false}); }
+      catch(e){ out += esc(p); }
+    } else {
+      out += renderBareMath(esc(p));
+    }
+  }
+  return out;
+}
+function renderBareMath(escaped){
+  // escaped text: LaTeX backslashes survive esc(). Scan for \command sequences.
+  var s = escaped, out = "", i = 0;
+  var cmds = /^(frac|dfrac|sqrt|lim|int|sum|prod|log|ln|sin|cos|tan|vec|bar|hat|mathbb|mathrm|mathbf|left|right|begin|end|setminus|to|infty|pi|alpha|beta|gamma|theta|lambda|mu|le|ge|ne|approx|pm|times|cdot|div|in|notin|subset|supset|cap|cup|varnothing|emptyset|rightarrow|Rightarrow|leftarrow|dots|ldots|cdots|text|operatorname)/;
+  while(i < s.length){
+    if(s[i]==="\\" && i+1 < s.length && /[a-zA-Z]/.test(s[i+1])){
+      var rest = s.slice(i+1);
+      var m = rest.match(cmds);
+      if(m){
+        var expr = extractMathExpr(s, i);
+        if(expr){
+          try{ out += katex.renderToString(expr.tex,{displayMode:false,throwOnError:false}); i = expr.end; continue; }
+          catch(e){ /* fall through to plain char */ }
+        }
+      }
+    }
+    out += s[i]; i++;
+  }
+  return out;
+}
+function extractMathExpr(s, start){
+  // Consume a plausible math run starting at backslash, with balanced braces/parens.
+  var i = start, depthBrace = 0, depthParen = 0, depthBracket = 0, seen = false;
+  var n = s.length;
+  while(i < n){
+    var ch = s[i];
+    if(ch === "{" ){ depthBrace++; seen=true; i++; continue; }
+    if(ch === "}" ){ if(depthBrace===0) break; depthBrace--; i++; continue; }
+    if(ch === "(" ){ depthParen++; seen=true; i++; continue; }
+    if(ch === ")" ){ if(depthParen===0 && depthBrace===0 && depthBracket===0){ i++; break; } depthParen--; i++; continue; }
+    if(ch === "[" ){ depthBracket++; seen=true; i++; continue; }
+    if(ch === "]" ){ if(depthBracket===0) break; depthBracket--; i++; continue; }
+    if(depthBrace>0 || depthParen>0 || depthBracket>0){ i++; continue; }
+    if(/[a-zA-Z0-9\\]/.test(ch) || "^_.,;:!?*=+\\-/%'\"|~<> ".indexOf(ch)>=0){
+      // Stop before a Vietnamese word: space + 2+ letters that are not single math vars,
+      // unless previous char suggests continuation (operator, =, comma in list).
+      if(ch === " "){
+        var ahead = s.slice(i+1).match(/^[a-zA-ZÀ-ỹ]{2,}/);
+        var prev = s.slice(Math.max(0,i-3), i);
+        if(ahead && !/[=+\-*,^_(\\]$/.test(prev) && !/^(sin|cos|tan|log|ln|lim|frac|sqrt)/.test(ahead[0])){
+          // A space followed by a real word: end expression (but keep if word is "trên" etc. handled by 2+ letters)
+          break;
+        }
+      }
+      seen = true; i++; continue;
+    }
+    break;
+  }
+  if(!seen) return null;
+  var tex = s.slice(start, i).trim();
+  // Reject if it swallowed a long Vietnamese sentence: too many spaces + long words.
+  var words = tex.split(/\s+/).filter(function(w){return w.length>3 && !/\\/.test(w) && !/^[{}()\[\]]+$/.test(w)});
+  if(words.length > 2) return null;
+  if(tex.length < 2) return null;
+  return {tex: tex, end: i};
+}
+function figureHtml(fig, qIndex){
+  if(!fig) return "";
+  if(fig.unsupported){
+    return '<div class="warnbox" style="margin:10px 0">Hình trong file Word ở câu này thuộc dạng ' + esc(fig.ext.toUpperCase()) + ' mà trình duyệt không mở được. Thầy chuyển hình đó sang PNG/JPEG trong Word rồi nạp lại.</div>';
+  }
+  return '<figure class="qfig"><img src="' + fig.src + '" alt="Hình minh họa cho câu hỏi" data-fig="' + qIndex + '" loading="lazy"><figcaption>Bấm vào hình để phóng to.</figcaption></figure>';
+}
+function questionHtml(q, idx, showAnswer){
+  var letters = ["A","B","C","D"];
+  var h = '<div class="qitem' + (showAnswer ? ' correct-mark' : '') + '">';
+  h += '<div class="qhead"><span>Câu ' + (idx+1) + '</span>';
+  if(showAnswer && q.correct != null) h += '<span class="pill green">Đáp án đúng: ' + letters[q.correct] + '</span>';
+  if(q.unsupportedFig) h += '<span class="pill red">Có hình chưa hiển thị được</span>';
+  h += '</div>';
+  h += '<div class="qtext">' + renderMathInText(q.text) + '</div>';
+  (q.figures||[]).forEach(function(f){ h += figureHtml(f, idx); });
+  q.options.forEach(function(o, oi){
+    h += '<div class="opt ' + letters[oi] + (showAnswer && oi===q.correct ? ' is-correct' : '') + '"><span class="letter">' + letters[oi] + '</span><span>' + renderMathInText(o) + '</span></div>';
+  });
+  if(showAnswer && q.explain){
+    h += '<div style="margin-top:10px;font-size:14px"><b>Giải thích:</b> ' + renderMathInText(q.explain) + '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+function openLightbox(src){
+  el("lightboxImg").src = src;
+  el("lightbox").classList.add("open");
+}
+document.addEventListener("click", function(e){
+  var t = e.target.closest("[data-fig]");
+  if(t) openLightbox(t.src);
+});
+el("lightboxClose").addEventListener("click", function(){ el("lightbox").classList.remove("open"); });
+el("lightbox").addEventListener("click", function(e){ if(e.target===el("lightbox")) el("lightbox").classList.remove("open"); });
+</script>
+<script>
+"use strict";
+/* ================= Default question bank: 28 Toán 12 HK1 ================= */
+var DEFAULT_QUESTIONS = [
+{q:"Hàm số $y=x^3-3x^2+2$ nghịch biến trên khoảng nào sau đây?",options:["$(-\\infty;0)$","$(0;2)$","$(2;+\\infty)$","$(-\\infty;2)$"],correct:1,explain:"$y'=3x^2-6x=3x(x-2)<0 \\iff 0<x<2$."},
+{q:"Điểm cực đại của đồ thị hàm số $y=x^3-3x+2$ là",options:["$(1;0)$","$(-1;4)$","$(1;4)$","$(-1;0)$"],correct:1,explain:"$y'=3x^2-3=0 \\iff x=\\pm 1$; $y'$ đổi dấu từ $+$ sang $-$ tại $x=-1$, $y(-1)=4$."},
+{q:"Đường tiệm cận đứng của đồ thị hàm số $y=\\frac{2x+1}{x-1}$ là đường thẳng",options:["$x=2$","$x=1$","$y=1$","$y=2$"],correct:1,explain:"Mẫu bằng 0 tại $x=1$, tử khác 0 nên $x=1$ là tiệm cận đứng."},
+{q:"Giá trị lớn nhất của hàm số $y=x^3-3x+1$ trên đoạn $[0;2]$ bằng",options:["$1$","$-1$","$3$","$2$"],correct:2,explain:"$y(0)=1,\\ y(1)=-1,\\ y(2)=3$ nên giá trị lớn nhất bằng $3$."},
+{q:"Hàm số $y=x^4-2x^2+1$ có bao nhiêu điểm cực trị?",options:["$1$","$2$","$3$","$4$"],correct:2,explain:"$y'=4x^3-4x=4x(x^2-1)=0$ có 3 nghiệm phân biệt."},
+{q:"Giá trị cực tiểu của hàm số $y=-x^3+3x^2-2$ bằng",options:["$2$","$0$","$-2$","$4$"],correct:2,explain:"$y'=-3x^2+6x=0 \\iff x=0$ hoặc $x=2$; cực tiểu tại $x=0$, $y(0)=-2$."},
+{q:"Đường tiệm cận xiên của đồ thị hàm số $y=\\frac{x^2+1}{x}$ là đường thẳng",options:["$y=x$","$y=1$","$y=-x$","$y=x+1$"],correct:0,explain:"$y=x+\\frac{1}{x}$ nên khi $x\\to\\pm\\infty$, đồ thị tiệm cận với $y=x$."},
+{q:"Hàm số $y=\\frac{2x-1}{x+1}$ đồng biến trên khoảng nào sau đây?",options:["$(-\\infty;-1)$ và $(-1;+\\infty)$","$(-1;+\\infty)$","$\\mathbb{R}$","$(-\\infty;1)$"],correct:1,explain:"$y'=\\frac{3}{(x+1)^2}>0$ trên từng khoảng xác định; chỉ $(-1;+\\infty)$ là một khoảng đồng biến trọn vẹn trong các lựa chọn."},
+{q:"$\\log_2 8$ bằng",options:["$2$","$4$","$3$","$8$"],correct:2,explain:"$2^3=8$ nên $\\log_2 8=3$."},
+{q:"Tập xác định của hàm số $y=\\log_3(x-2)$ là",options:["$(2;+\\infty)$","$[2;+\\infty)$","$\\mathbb{R}$","$(0;+\\infty)$"],correct:0,explain:"Điều kiện $x-2>0 \\iff x>2$."},
+{q:"Nghiệm của phương trình $2^x=16$ là",options:["$x=3$","$x=4$","$x=5$","$x=8$"],correct:1,explain:"$16=2^4$ nên $x=4$."},
+{q:"Nghiệm của phương trình $\\log_2(x-1)=2$ là",options:["$x=3$","$x=4$","$x=5$","$x=6$"],correct:2,explain:"$x-1=2^2=4$ nên $x=5$."},
+{q:"Đạo hàm của hàm số $y=3^x$ là",options:["$y'=3^x$","$y'=3^x\\ln 3$","$y'=x\\cdot 3^{x-1}$","$y'=\\frac{3^x}{\\ln 3}$"],correct:1,explain:"$(a^x)'=a^x\\ln a$."},
+{q:"Tập nghiệm của bất phương trình $2^x>8$ là",options:["$(3;+\\infty)$","$(-\\infty;3)$","$(2;+\\infty)$","$[3;+\\infty)$"],correct:0,explain:"$2^x>2^3 \\iff x>3$."},
+{q:"Giá trị của biểu thức $\\log_2 8+\\log_2 4$ bằng",options:["$5$","$6$","$7$","$12$"],correct:0,explain:"$3+2=5$."},
+{q:"Nghiệm của phương trình $\\log_3 x+\\log_3(x-2)=1$ là",options:["$x=1$","$x=2$","$x=3$","$x=4$"],correct:2,explain:"$x(x-2)=3 \\iff x^2-2x-3=0$, nghiệm $x=3$ thỏa điều kiện, $x=-1$ loại."},
+{q:"Nguyên hàm của hàm số $f(x)=2x+1$ là",options:["$x^2+x+C$","$x^2+1+C$","$2x^2+x+C$","$x^2+x$"],correct:0,explain:"$\\int (2x+1)\\,dx=x^2+x+C$."},
+{q:"$\\int_0^1 x^2\\,dx$ bằng",options:["$1$","$\\frac{1}{3}$","$\\frac{1}{2}$","$\\frac{2}{3}$"],correct:1,explain:"$\\left[\\frac{x^3}{3}\\right]_0^1=\\frac13$."},
+{q:"$\\int_0^{\\frac{\\pi}{2}}\\cos x\\,dx$ bằng",options:["$0$","$1$","$-1$","$\\frac{\\pi}{2}$"],correct:1,explain:"$[\\sin x]_0^{\\pi/2}=1-0=1$."},
+{q:"$\\int_1^2 \\frac{1}{x}\\,dx$ bằng",options:["$\\ln 2$","$1$","$\\ln 3$","$2$"],correct:0,explain:"$[\\ln|x|]_1^2=\\ln 2$."},
+{q:"$\\int_0^1 e^x\\,dx$ bằng",options:["$e$","$e-1$","$1$","$e+1$"],correct:1,explain:"$[e^x]_0^1=e-1$."},
+{q:"$\\int_0^2 2x\\,dx$ bằng",options:["$2$","$3$","$4$","$8$"],correct:2,explain:"$[x^2]_0^2=4$."},
+{q:"Trong không gian $Oxyz$, cho $A(1;2;3)$ và $B(3;0;1)$. Độ dài đoạn thẳng $AB$ bằng",options:["$2\\sqrt{2}$","$2\\sqrt{3}$","$4$","$\\sqrt{12}$"],correct:1,explain:"$\\overrightarrow{AB}=(2;-2;-2)$ nên $AB=\\sqrt{4+4+4}=2\\sqrt3$."},
+{q:"Trong không gian $Oxyz$, vectơ pháp tuyến của mặt phẳng $(P):x+2y-3z+1=0$ là",options:["$(1;2;1)$","$(1;2;-3)$","$(2;-3;1)$","$(1;-2;3)$"],correct:1,explain:"Vectơ pháp tuyến là $(1;2;-3)$."},
+{q:"Trong không gian $Oxyz$, khoảng cách từ điểm $M(1;-2;3)$ đến mặt phẳng $(Oxy)$ bằng",options:["$1$","$2$","$3$","$\\sqrt{14}$"],correct:2,explain:"Khoảng cách đến $(Oxy)$ bằng $|z_M|=3$."},
+{q:"Trong không gian $Oxyz$, mặt cầu $(x-1)^2+(y+2)^2+(z-3)^2=9$ có tâm là",options:["$(1;2;3)$","$(-1;2;-3)$","$(1;-2;3)$","$(1;-2;-3)$"],correct:2,explain:"Tâm $I(1;-2;3)$, bán kính $R=3$."},
+{q:"Trong không gian $Oxyz$, đường thẳng đi qua $A(1;0;2)$ và có vectơ chỉ phương $\\vec u=(2;1;-1)$ có phương trình tham số là",options:["$\\begin{cases}x=1+2t\\\\y=t\\\\z=2-t\\end{cases}$","$\\begin{cases}x=2+t\\\\y=1\\\\z=-1+2t\\end{cases}$","$\\begin{cases}x=1+t\\\\y=2t\\\\z=2+t\\end{cases}$","$\\begin{cases}x=1-2t\\\\y=-t\\\\z=2+t\\end{cases}$"],correct:0,explain:"Điểm đi qua cộng $t$ lần vectơ chỉ phương."},
+{q:"Trong không gian $Oxyz$, cho $A(0;2;4)$ và $B(4;0;2)$. Trung điểm của đoạn $AB$ là",options:["$(2;1;3)$","$(4;2;6)$","$(2;2;2)$","$(1;1;3)$"],correct:0,explain:"$M\\left(\\frac{0+4}{2};\\frac{2+0}{2};\\frac{4+2}{2}\\right)=(2;1;3)$."}
+];
+DEFAULT_QUESTIONS.forEach(function(q){ q.figures=[]; q.unsupportedFig=false; });
+
+/* ================= State ================= */
+var students = [];   // {id, name, card}
+var editingId = null;
+var clearArmed = false;
+var questions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+var pendingImport = null; // {questions, errors, unsupportedCount}
+var nextStudentId = 1;
+var session = null;  // {index, answers: {qid: {studentId: letter}}, revealed, timerId, timeLeft, running, totalTime}
+var stream = null;
+
+var LETTERS = ["A","B","C","D"];
+
+function updateChips(){
+  el("chipClass").textContent = "Lớp: " + (el("className").value.trim()||"chưa đặt tên") + " · " + students.length + " học sinh";
+  el("chipBank").textContent = "Bộ đề: " + questions.length + " câu";
+  el("tabBankCount").textContent = questions.length;
+  el("bankCountLabel").textContent = questions.length;
+  el("chipSession").textContent = session ? ("Buổi chấm: câu " + (session.index+1) + "/" + questions.length) : "Buổi chấm: chưa bắt đầu";
+}
+function renumberCards(){
+  students.forEach(function(s,i){ s.card = i+1; });
+}
+
+/* ================= Class ================= */
+function renderRoster(){
+  var box = el("roster");
+  el("rosterTitle").textContent = "Học sinh trong lớp (" + students.length + ")";
+  el("rosterEmpty").style.display = students.length ? "none" : "block";
+  box.innerHTML = students.map(function(s){
+    if(s.id===editingId){
+      return '<div class="student-row"><span class="cardnum">' + s.card + '</span>' +
+        '<input type="text" id="renameInput" value="' + escAttr(s.name) + '" style="flex:1 1 140px" />' +
+        '<button class="iconbtn" type="button" data-save-rename="' + s.id + '">Lưu</button>' +
+        '<button class="iconbtn" type="button" data-cancel-rename="1">Hủy</button></div>';
+    }
+    return '<div class="student-row"><span class="cardnum">' + s.card + '</span>' +
+      '<span class="student-name">' + esc(s.name) + '</span>' +
+      '<span class="hint">Thẻ số ' + s.card + '</span>' +
+      '<button class="iconbtn" type="button" data-rename="' + s.id + '">Đổi tên</button>' +
+      '<button class="iconbtn" type="button" data-del="' + s.id + '">Xóa</button></div>';
+  }).join("");
+  if(editingId!=null){ var ri=el("renameInput"); if(ri){ ri.focus(); ri.select(); } }
+  renderCards(); renderQuickBoard(); renderScanSelect(); updateChips();
+}
+function addStudent(name){
+  name = (name||"").trim();
+  if(!name) return false;
+  students.push({id: nextStudentId++, name: name, card: students.length+1});
+  renderRoster();
+  return true;
+}
+el("addStudentBtn").addEventListener("click", function(){
+  if(addStudent(el("newStudent").value)){ el("newStudent").value=""; el("newStudent").focus(); }
+  else { el("newStudent").focus(); }
+});
+el("newStudent").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); el("addStudentBtn").click(); } });
+el("bulkAddBtn").addEventListener("click", function(){
+  var lines = el("bulkNames").value.split(/\r?\n/);
+  var added = 0;
+  lines.forEach(function(line){
+    var name = line.replace(/^\s*\d+[\.\)]\s*/,"").trim();
+    if(name && addStudent(name)) added++;
+  });
+  if(added) el("bulkNames").value = "";
+  el("bulkMsg").textContent = added ? ("Đã thêm " + added + " học sinh.") : "Chưa có tên hợp lệ nào trong khung. Mỗi dòng một tên học sinh.";
+});
+el("sampleClassBtn").addEventListener("click", function(){
+  var names = ["Nguyễn Văn An","Trần Thị Bình","Lê Minh Châu","Phạm Quốc Dũng","Hoàng Thu Hà","Vũ Đức Hải","Đặng Ngọc Lan","Bùi Thanh Long","Đỗ Phương Mai","Ngô Văn Nam","Dương Thu Ngân","Lý Hoàng Phong","Trịnh Minh Quân","Phan Thị Thu","Tạ Văn Sơn","Hồ Ngọc Anh","Mai Đức Thắng","Lâm Thị Thảo","Đinh Văn Tuấn","Quách Thu Trang","Hà Minh Đức","Nguyễn Thu Hằng","Trần Quốc Huy","Lê Thị Yến"];
+  students = [];
+  names.forEach(function(n){ students.push({id: nextStudentId++, name:n, card: students.length+1}); });
+  renderRoster();
+});
+el("clearClassBtn").addEventListener("click", function(){
+  if(!students.length) return;
+  if(!clearArmed){
+    clearArmed = true;
+    el("clearClassBtn").textContent = "Bấm lại để xác nhận xóa cả lớp";
+    setTimeout(function(){ clearArmed=false; el("clearClassBtn").textContent="Xóa cả lớp"; }, 4000);
+    return;
+  }
+  clearArmed = false;
+  el("clearClassBtn").textContent = "Xóa cả lớp";
+  students=[]; renderRoster();
+});
+el("roster").addEventListener("click", function(e){
+  var del = e.target.closest("[data-del]");
+  var ren = e.target.closest("[data-rename]");
+  var save = e.target.closest("[data-save-rename]");
+  var cancel = e.target.closest("[data-cancel-rename]");
+  if(del){
+    var id = +del.getAttribute("data-del");
+    students = students.filter(function(s){return s.id!==id});
+    renumberCards(); renderRoster();
+  }
+  if(ren){
+    editingId = +ren.getAttribute("data-rename");
+    renderRoster();
+  }
+  if(save){
+    var id2 = +save.getAttribute("data-save-rename");
+    var s = students.find(function(x){return x.id===id2});
+    var nv = el("renameInput") ? el("renameInput").value : "";
+    if(nv && nv.trim()) s.name = nv.trim();
+    editingId = null; renderRoster();
+  }
+  if(cancel){ editingId = null; renderRoster(); }
+});
+el("className").addEventListener("input", updateChips);
+
+/* ================= Bank rendering ================= */
+function renderBank(){
+  var box = el("bankList");
+  if(!questions.length){
+    box.innerHTML = '<p class="hint">Chưa có câu hỏi nào. Nạp file Word hoặc khôi phục bộ đề gốc.</p>';
+  } else {
+    box.innerHTML = questions.map(function(q,i){ return questionHtml(q,i,true); }).join("");
+  }
+  var sel = el("startAt");
+  sel.innerHTML = questions.map(function(q,i){ return '<option value="'+i+'">Câu '+(i+1)+'</option>'; }).join("");
+  updateChips();
+}
+function renderCards(){
+  var grid = el("cardsGrid");
+  var printGrid = el("printGrid");
+  el("cardsEmpty").style.display = students.length ? "none" : "block";
+  var html = students.map(function(s){
+    return '<div class="paper-card"><span class="cut">✂</span><span class="orient" aria-hidden="true"></span>' +
+      '<span class="edge a">A<small>TRÊN</small></span><span class="edge b">B</span><span class="edge c">C</span><span class="edge d">D</span>' +
+      '<div class="num">'+s.card+'</div><div class="sname">'+esc(s.name)+'</div>' +
+      '<div class="foot">XOAY CHỮ ĐÁP ÁN LÊN TRÊN · '+esc(el("className").value.trim()||"TOÁN 12")+'</div></div>';
+  }).join("");
+  grid.innerHTML = html;
+  printGrid.innerHTML = html;
+  grid.classList.toggle("compact", el("cardSize").value==="compact");
+  printGrid.classList.toggle("compact", el("cardSize").value==="compact");
+}
+el("cardSize").addEventListener("change", renderCards);
+el("backFromPrintBtn").addEventListener("click", function(){
+  document.querySelector('[data-tab="cards"]').click();
+});
+el("printBtn").addEventListener("click", function(){
+  if(!students.length){
+    el("cardsEmpty").textContent = "Chưa có học sinh nên chưa có thẻ nào để in. Thêm học sinh ở phần “Lớp học” trước.";
+    el("cardsEmpty").style.display = "block";
+    return;
+  }
+  document.querySelectorAll("section.panel").forEach(function(p){ p.classList.remove("active"); });
+  el("print-area").classList.add("active");
+  window.scrollTo(0,0);
+  window.print();
+});
+el("previewPrintBtn").addEventListener("click", function(){
+  if(!students.length){
+    el("cardsEmpty").textContent = "Chưa có học sinh nên chưa có thẻ nào để in. Thêm học sinh ở phần “Lớp học” trước.";
+    el("cardsEmpty").style.display = "block";
+    return;
+  }
+  document.querySelectorAll("section.panel").forEach(function(p){ p.classList.remove("active"); });
+  el("print-area").classList.add("active");
+  window.scrollTo(0,0);
+});
+
+renderCards();
+</script>
+<script>
+"use strict";
+/* ================= Tabs ================= */
+document.querySelectorAll(".tab").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".tab").forEach(function(b){ b.setAttribute("aria-selected","false"); });
+    btn.setAttribute("aria-selected","true");
+    document.querySelectorAll("section.panel").forEach(function(p){ p.classList.remove("active"); });
+    el("sec-" + btn.getAttribute("data-tab")).classList.add("active");
+    if(btn.getAttribute("data-tab")==="results") renderResults();
+    if(btn.getAttribute("data-tab")==="scan" && session) renderLive();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+});
+function gotoTab(name){
+  document.querySelector('[data-tab="'+name+'"]').click();
+}
+
+/* ================= DOCX import ================= */
+function localName(node){ return node.localName || (node.nodeName||"").split(":").pop(); }
+function childEls(node, name){
+  var out=[];
+  for(var i=0;i<node.childNodes.length;i++){ var c=node.childNodes[i]; if(c.nodeType===1 && localName(c)===name) out.push(c); }
+  return out;
+}
+function descendants(node, name, out){
+  out = out||[];
+  for(var i=0;i<node.childNodes.length;i++){ var c=node.childNodes[i]; if(c.nodeType!==1) continue; if(localName(c)===name) out.push(c); descendants(c,name,out); }
+  return out;
+}
+function runInfo(run){
+  var text="", underlined=false;
+  var rPr = childEls(run,"rPr")[0];
+  if(rPr){
+    var u = childEls(rPr,"u")[0];
+    if(u){ var v = u.getAttribute("w:val") || u.getAttribute("val"); if(v!=="none" && v!=="0") underlined=true; }
+    var bCs = childEls(rPr,"bCs")[0];
+  }
+  for(var i=0;i<run.childNodes.length;i++){
+    var c=run.childNodes[i]; if(c.nodeType!==1) continue;
+    var ln=localName(c);
+    if(ln==="t") text += c.textContent;
+    else if(ln==="tab") text += " ";
+    else if(ln==="br") text += "\n";
+    else if(ln==="sym"){ text += c.getAttribute("w:char")||""; }
+  }
+  return {text:text, underlined:underlined};
+}
+function paragraphInfo(p, rels, media){
+  var spans=[], images=[];
+  var runs = descendants(p,"r");
+  var pos=0;
+  runs.forEach(function(r){
+    var info = runInfo(r);
+    if(info.text){
+      spans.push({start:pos, end:pos+info.text.length, text:info.text, underlined:info.underlined});
+      pos += info.text.length;
+    }
+  });
+  // Images: a:blip (drawing) and v:imagedata (pict)
+  var blips = descendants(p,"blip");
+  blips.forEach(function(b){
+    var id = b.getAttribute("r:embed") || b.getAttribute("r:link");
+    if(id && rels[id]) images.push(makeFigure(rels[id], media));
+  });
+  var imgs = descendants(p,"imagedata");
+  imgs.forEach(function(im){
+    var id2 = im.getAttribute("r:id");
+    if(id2 && rels[id2]) images.push(makeFigure(rels[id2], media));
+  });
+  var text = spans.map(function(s){return s.text}).join("");
+  return {text:text, spans:spans, images:images};
+}
+function makeFigure(target, media){
+  var clean = target.replace(/^\/?word\//,"").replace(/^\//,"");
+  var ext = (clean.split(".").pop()||"").toLowerCase();
+  var key = "word/" + clean;
+  if(["png","jpg","jpeg","gif","webp"].indexOf(ext)>=0 && media[key]){
+    return {src: media[key], ext: ext, unsupported:false};
+  }
+  return {src:"", ext: ext||"wmf", unsupported:true};
+}
+function underlinedInRange(spans, a, b){
+  var total=0, under=0;
+  spans.forEach(function(s){
+    var lo=Math.max(s.start,a), hi=Math.min(s.end,b);
+    if(hi>lo){ total+=hi-lo; if(s.underlined) under+=hi-lo; }
+  });
+  return {total:total, under:under};
+}
+function parseDocxBuffer(buf){
+  return JSZip.loadAsync(buf).then(function(zip){
+    var docFile = zip.file("word/document.xml");
+    if(!docFile) throw new Error("Không thấy word/document.xml trong file. File này có thể không phải file Word (.docx) chuẩn.");
+    return docFile.async("text").then(function(docXml){
+      var relsXml = "";
+      var relsFile = zip.file("word/_rels/document.xml.rels");
+      var relsP = relsFile ? relsFile.async("text") : Promise.resolve("");
+      return relsP.then(function(rx){
+        var mediaPromises = [];
+        var media = {};
+        zip.forEach(function(path, file){
+          if(path.indexOf("word/media/")===0 && !file.dir){
+            mediaPromises.push(file.async("base64").then(function(b64){
+              var ext=(path.split(".").pop()||"").toLowerCase();
+              var mime = ext==="png"?"image/png":(ext==="gif"?"image/gif":(ext==="webp"?"image/webp":"image/jpeg"));
+              media[path]= "data:"+mime+";base64,"+b64;
+            }));
+          }
+        });
+        return Promise.all(mediaPromises).then(function(){
+          return buildQuestions(docXml, rx, media);
+        });
+      });
+    });
+  });
+}
+function buildQuestions(docXml, relsXml, media){
+  var rels = {};
+  if(relsXml){
+    var rdoc = new DOMParser().parseFromString(relsXml,"text/xml");
+    var relEls = rdoc.getElementsByTagName("Relationship");
+    for(var i=0;i<relEls.length;i++){
+      rels[relEls[i].getAttribute("Id")] = relEls[i].getAttribute("Target")||"";
+    }
+  }
+  var doc = new DOMParser().parseFromString(docXml,"text/xml");
+  var paras = descendants(doc,"p");
+  var infos = paras.map(function(p){ return paragraphInfo(p, rels, media); });
+  var questions=[], errors=[], unsupportedCount=0, pendingFigs=[];
+  var current=null, lastWasOption=false;
+  function finishCurrent(){
+    if(!current) return;
+    if(current.options.length<2) errors.push("Câu "+current.num+": chỉ có "+current.options.length+" đáp án, cần ít nhất 2 đáp án A–D.");
+    if(current.correct==null) errors.push("Câu "+current.num+": chưa rõ đáp án đúng (thiếu dòng “Đáp án: X” và không có đáp án nào được gạch chân).");
+    current.options.forEach(function(o,oi){
+      if(!String(o).trim() && !(current.figures&&current.figures.length)) errors.push("Câu "+current.num+": đáp án "+LETTERS[oi]+" đang trống.");
+    });
+    questions.push(current);
+    current=null;
+  }
+  infos.forEach(function(info){
+    var text = info.text.replace(/\s+/g," ").trim();
+    var raw = info.text;
+    // Figure-only paragraph
+    if(!text && info.images.length){
+      info.images.forEach(function(f){ if(f.unsupported) unsupportedCount++; });
+      if(current) current.figures = current.figures.concat(info.images);
+      else pendingFigs = pendingFigs.concat(info.images);
+      return;
+    }
+    if(!text) return;
+    var qm = text.match(/^Câu\s+(\d+)\s*[:\.\-\)]?\s*(.*)$/i);
+    var numFallback = !qm ? text.match(/^(\d{1,3})[\.\)]\s+(.+)$/) : null;
+    if(qm || (numFallback && numFallback[2].length>8)){
+      finishCurrent();
+      var num = qm? +qm[1] : +numFallback[1];
+      var qtext = (qm? qm[2] : numFallback[2]).trim();
+      current = {num:num, text:qtext, options:[], correct:null, explain:"", figures: pendingFigs.slice(), unsupportedFig:false};
+      pendingFigs=[];
+      info.images.forEach(function(f){ if(f.unsupported) unsupportedCount++; });
+      current.figures = current.figures.concat(info.images);
+      lastWasOption=false;
+      return;
+    }
+    if(!current){
+      // Stray paragraph before first question: ignore (titles, headers).
+      return;
+    }
+    // Split paragraphs containing several options on one line: A. ... B. ... C. ...
+    var optMarkers = [];
+    var re = /(^|\s)([A-D])[\.\)]\s+/g, mm;
+    while((mm=re.exec(text))!==null){ optMarkers.push({letter:mm[2], at: mm.index + mm[1].length}); }
+    if(optMarkers.length>=2 && optMarkers[0].at<=2){
+      for(var k=0;k<optMarkers.length;k++){
+        var start = optMarkers[k].at + 2;
+        var end = k+1<optMarkers.length ? optMarkers[k+1].at : text.length;
+        var segText = text.slice(start,end).trim();
+        var u = underlinedInRange(info.spans, start, end);
+        var isCorrect = (u.total>0 && u.under>=u.total*0.5) || (u.under>=2 && segText.length<=3);
+        addOption(current, optMarkers[k].letter, segText, isCorrect);
+      }
+      lastWasOption=true;
+      return;
+    }
+    var singleOpt = text.match(/^([A-D])[\.\)\:]\s*(.*)$/);
+    if(singleOpt && singleOpt[2].length>=0){
+      // Guard: "A. ..." could be a sentence starting a continuation; require it looks like an option:
+      // accept if we have <4 options so far, or text is short-ish, or previous line was an option.
+      if(current.options.length<4){
+        var u2 = underlinedInRange(info.spans, 0, text.length);
+        var segLen = singleOpt[2].length;
+        var isCorrect2 = (u2.total>0 && u2.under>=Math.max(2, u2.total*0.5) && segLen>0) ||
+                         (u2.under>0 && segLen<=2) ||
+                         (u2.under>0 && singleOpt[2].trim().length>0 && u2.under>=segLen*0.8);
+        addOption(current, singleOpt[1], singleOpt[2].trim(), isCorrect2);
+        info.images.forEach(function(f){ if(f.unsupported) unsupportedCount++; });
+        current.figures = current.figures.concat(info.images);
+        lastWasOption=true;
+        return;
+      }
+    }
+    var ansM = text.match(/Đáp\s*án\s*(đúng)?\s*[:：]\s*([A-D])\b/i);
+    if(ansM){
+      current.correct = LETTERS.indexOf(ansM[2].toUpperCase());
+      lastWasOption=false;
+      return;
+    }
+    var expM = raw.match(/^\s*(Giải thích|Lời giải|Hướng dẫn|Đáp án chi tiết)\s*[:\.]\s*/i);
+    if(expM){
+      current.explain = text.slice(expM[0].length).trim();
+      lastWasOption=false;
+      return;
+    }
+    if(lastWasOption && current.explain){
+      current.explain += " " + text;
+      return;
+    }
+    if(current.options.length===0){
+      // Continuation of the question stem (wrapped lines, figure captions in text).
+      current.text += " " + text;
+      info.images.forEach(function(f){ if(f.unsupported) unsupportedCount++; });
+      current.figures = current.figures.concat(info.images);
+    } else if(current.options.length>0 && current.correct!=null && !current.explain){
+      current.explain = text;
+    } else {
+      // Continuation of last option (wrapped line).
+      var last = current.options[current.options.length-1];
+      if(last!=null) current.options[current.options.length-1] = (last+" "+text).trim();
+    }
+    lastWasOption=false;
+  });
+  finishCurrent();
+  questions.forEach(function(q){
+    q.unsupportedFig = q.figures.some(function(f){return f.unsupported});
+    if(!q.figures) q.figures=[];
+    delete q.num;
+  });
+  return {questions: questions, errors: errors, unsupportedCount: unsupportedCount};
+}
+function addOption(q, letter, text, isCorrect){
+  var idx = LETTERS.indexOf(letter);
+  while(q.options.length<idx) q.options.push("");
+  q.options[idx]=text;
+  if(isCorrect) q.correct=idx;
+}
+function renderImportPreview(res){
+  var box = el("importPreview");
+  var html = '<h3 style="margin-top:16px">Xem trước: đọc được ' + res.questions.length + ' câu' +
+    (res.errors.length? ' · <span class="pill red">'+res.errors.length+' lỗi cần sửa</span>' : ' · <span class="pill green">không có lỗi</span>') +
+    (res.unsupportedCount? ' · <span class="pill red">'+res.unsupportedCount+' hình chưa hiển thị được</span>' : '') + '</h3>';
+  if(res.errors.length){
+    html += '<div class="errbox" style="margin-top:10px"><b>Chưa áp dụng được — sửa file Word rồi nạp lại:</b><ul style="margin:8px 0 0;padding-left:20px">' +
+      res.errors.map(function(e){return '<li>'+esc(e)+'</li>'}).join("") + '</ul></div>';
+  }
+  if(res.unsupportedCount){
+    html += '<div class="warnbox" style="margin-top:10px">Có hình WMF/EMF trong file mà trình duyệt không mở được. Các câu đó vẫn nạp được, nhưng hình sẽ hiện cảnh báo thay vì hình thật. Chuyển hình sang PNG/JPEG trong Word rồi nạp lại để xem đủ.</div>';
+  }
+  html += res.questions.map(function(q,i){ return questionHtml(q,i,true); }).join("");
+  box.innerHTML = html;
+  el("importActions").style.display = res.questions.length ? "flex" : "none";
+  el("applyReplaceBtn").disabled = res.errors.length>0;
+  el("applyAppendBtn").disabled = res.errors.length>0;
+}
+el("pickDocxBtn").addEventListener("click", function(){ el("docxInput").click(); });
+el("docxInput").addEventListener("change", function(){
+  var f = el("docxInput").files[0];
+  if(!f) return;
+  el("importMsg").innerHTML = '<p class="hint">Đang đọc file “'+esc(f.name)+'”…</p>';
+  el("importPreview").innerHTML = "";
+  el("importActions").style.display = "none";
+  var reader = new FileReader();
+  reader.onload = function(){
+    parseDocxBuffer(reader.result).then(function(res){
+      pendingImport = res;
+      if(!res.questions.length){
+        el("importMsg").innerHTML = '<div class="errbox">Không đọc được câu hỏi nào. Kiểm tra lại: mỗi câu phải bắt đầu bằng “Câu 1:”, có các dòng A. B. C. D. và dòng “Đáp án: X”. Tải file mẫu Word để xem đúng định dạng.</div>';
+        el("importPreview").innerHTML = "";
+        return;
+      }
+      el("importMsg").innerHTML = '<div class="okbox">Đã đọc file “'+esc(f.name)+'”: '+res.questions.length+' câu. Kiểm tra kỹ bảng xem trước bên dưới rồi bấm áp dụng.</div>';
+      renderImportPreview(res);
+    }).catch(function(err){
+      pendingImport = null;
+      el("importMsg").innerHTML = '<div class="errbox">Không đọc được file này: '+esc(err.message||err)+'. Thầy thử mở file bằng Word rồi lưu lại dạng .docx và nạp lại.</div>';
+    });
+  };
+  reader.onerror = function(){ el("importMsg").innerHTML = '<div class="errbox">Không đọc được file. Thầy thử chọn lại file.</div>'; };
+  reader.readAsArrayBuffer(f);
+  el("docxInput").value = "";
+});
+el("cancelImportBtn").addEventListener("click", function(){
+  pendingImport=null; el("importPreview").innerHTML=""; el("importActions").style.display="none";
+  el("importMsg").innerHTML="";
+});
+el("applyReplaceBtn").addEventListener("click", function(){
+  if(!pendingImport) return;
+  questions = pendingImport.questions;
+  pendingImport=null; el("importPreview").innerHTML=""; el("importActions").style.display="none";
+  el("importMsg").innerHTML='<div class="okbox">Đã thay toàn bộ bộ đề: '+questions.length+' câu. Bộ đề chỉ dùng trong phiên này.</div>';
+  renderBank(); resetSessionState();
+});
+el("applyAppendBtn").addEventListener("click", function(){
+  if(!pendingImport) return;
+  questions = questions.concat(pendingImport.questions);
+  pendingImport=null; el("importPreview").innerHTML=""; el("importActions").style.display="none";
+  el("importMsg").innerHTML='<div class="okbox">Đã thêm vào cuối bộ đề. Tổng cộng '+questions.length+' câu.</div>';
+  renderBank(); resetSessionState();
+});
+el("restoreBtn").addEventListener("click", function(){
+  questions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+  pendingImport=null; el("importPreview").innerHTML=""; el("importActions").style.display="none";
+  el("importMsg").innerHTML='<div class="okbox">Đã khôi phục bộ đề gốc: 28 câu Toán 12 học kì 1.</div>';
+  renderBank(); resetSessionState();
+});
+
+/* ---- Template .docx download ---- */
+function xmlEsc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function tplPara(text, opts){
+  opts=opts||{};
+  var runs = [{t:text, u:!!opts.underline, b:!!opts.bold}];
+  var rxml = runs.map(function(r){
+    var pr = "";
+    if(r.u) pr += '<w:u w:val="single"/>';
+    if(r.b) pr += '<w:b/>';
+    return '<w:r>' + (pr?'<w:rPr>'+pr+'</w:rPr>':'') + '<w:t xml:space="preserve">'+xmlEsc(r.t)+'</w:t></w:r>';
+  }).join("");
+  return '<w:p><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr>'+rxml+'</w:p>';
+}
+el("templateBtn").addEventListener("click", function(){
+  if(!window.JSZip){ el("importMsg").innerHTML='<div class="errbox">Chưa tải được thư viện tạo file. Thầy kiểm tra mạng rồi thử lại.</div>'; return; }
+  var paras = [];
+  paras.push(tplPara("MẪU ĐỀ TOÁN 12 — XÓA DÒNG NÀY VÀ CÁC CÂU VÍ DỤ, THAY BẰNG ĐỀ CỦA THẦY, GIỮ NGUYÊN ĐỊNH DẠNG.", {bold:true}));
+  paras.push(tplPara("Câu 1: Cho hàm số $y=f(x)$ liên tục trên đoạn $[3;7]$ và có bảng biến thiên như hình dưới đây. Gọi M, m lần lượt là giá trị lớn nhất và giá trị nhỏ nhất của hàm số $y=f(x)$ trên đoạn $[3;7]$. Giá trị của M+2m là"));
+  paras.push(tplPara("A. 1."));
+  paras.push(tplPara("B. 7.", {underline:true}));
+  paras.push(tplPara("C. 4."));
+  paras.push(tplPara("D. 3."));
+  paras.push(tplPara("Đáp án: B"));
+  paras.push(tplPara("Giải thích: Đọc giá trị lớn nhất và nhỏ nhất trên bảng biến thiên rồi tính M+2m."));
+  paras.push(tplPara("Câu 2: Hình vẽ bên dưới là đồ thị của hàm số $y=\\frac{ax+b}{cx+d}$. Đường tiệm cận đứng của đồ thị hàm số có phương trình là"));
+  paras.push(tplPara("A. y=1."));
+  paras.push(tplPara("B. y=2."));
+  paras.push(tplPara("C. x=1.", {underline:true}));
+  paras.push(tplPara("D. x=2."));
+  paras.push(tplPara("Đáp án: C"));
+  paras.push(tplPara("Câu 3: Giá trị của $\\lim_{x\\to 1}\\frac{x^2-1}{x-1}$ bằng"));
+  paras.push(tplPara("A. 1."));
+  paras.push(tplPara("B. 2.", {underline:true}));
+  paras.push(tplPara("C. 0."));
+  paras.push(tplPara("D. 3."));
+  paras.push(tplPara("Đáp án: B"));
+  paras.push(tplPara("Giải thích: $\\frac{x^2-1}{x-1}=x+1$ với $x\\ne 1$ nên giới hạn bằng 2."));
+  var docXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' +
+    paras.join("") + '<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body></w:document>';
+  var contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+  var rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+  var zip = new JSZip();
+  zip.file("[Content_Types].xml", contentTypes);
+  zip.folder("_rels").file(".rels", rels);
+  zip.folder("word").file("document.xml", docXml);
+  zip.generateAsync({type:"blob", mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}).then(function(blob){
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "mau-de-toan-12.docx";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+  });
+});
+</script>
+<script>
+"use strict";
+/* ================= Live session ================= */
+function resetSessionState(){
+  stopTimer();
+  session = null;
+  el("liveBox").style.display = "none";
+  el("sessionHint").textContent = "Chưa bắt đầu. Cần ít nhất 1 học sinh và 1 câu hỏi.";
+  el("scanResult").innerHTML = "";
+  el("scanConfirm").style.display = "none";
+  renderQuickBoard(); updateChips();
+}
+function stopTimer(){ if(session && session.timerId){ clearInterval(session.timerId); session.timerId=null; } }
+function currentAnswers(){
+  if(!session) return {};
+  return session.answers[session.index] || {};
+}
+function recordAnswer(studentId, letter){
+  if(!session) return;
+  if(!session.answers[session.index]) session.answers[session.index]={};
+  if(letter==null) delete session.answers[session.index][studentId];
+  else session.answers[session.index][studentId]=letter;
+  renderLiveStats(); renderQuickBoard(); renderResults();
+}
+function renderLive(){
+  if(!session) return;
+  var q = questions[session.index];
+  el("liveBox").style.display = "block";
+  el("liveCounter").textContent = "Câu " + (session.index+1) + " / " + questions.length;
+  el("liveQText").innerHTML = renderMathInText(q.text);
+  el("liveQFig").innerHTML = (q.figures||[]).map(function(f){ return figureHtml(f, session.index); }).join("");
+  el("liveOpts").innerHTML = q.options.map(function(o,oi){
+    var cls = "liveopt " + LETTERS[oi] + (session.revealed && oi===q.correct ? " reveal-correct" : "");
+    return '<div class="'+cls+'"><span class="letter">'+LETTERS[oi]+'</span><span>'+renderMathInText(o)+'</span></div>';
+  }).join("");
+  var ex = el("liveExplain");
+  if(session.revealed){
+    ex.style.display = "block";
+    ex.innerHTML = '<div class="okbox"><b>Đáp án đúng: ' + LETTERS[q.correct] + '.</b>' + (q.explain ? ' ' + renderMathInText(q.explain) : '') + '</div>';
+    el("revealBtn").textContent = "Đã chiếu đáp án";
+  } else {
+    ex.style.display = "none";
+    ex.innerHTML = "";
+    el("revealBtn").textContent = "Chiếu đáp án đúng";
+  }
+  el("liveTimer").textContent = session.timeLeft + "s";
+  el("timerFill").style.width = Math.max(0, session.timeLeft/session.totalTime*100) + "%";
+  renderLiveStats(); renderQuickBoard();
+  updateChips();
+}
+function renderLiveStats(){
+  if(!session) return;
+  var q = questions[session.index];
+  var ans = currentAnswers();
+  var got = Object.keys(ans).length;
+  var correct = 0;
+  Object.keys(ans).forEach(function(id){ if(ans[id]===LETTERS[q.correct]) correct++; });
+  el("statGot").textContent = got + "/" + students.length;
+  el("statCorrect").textContent = correct;
+  el("statRate").textContent = got ? Math.round(correct/got*100) + "%" : "—";
+  el("statLeft").textContent = Math.max(0, students.length - got);
+}
+function startTimer(){
+  stopTimer();
+  session.running = true;
+  el("timerBtn").textContent = "Dừng đồng hồ";
+  session.timerId = setInterval(function(){
+    if(!session || !session.running) return;
+    session.timeLeft--;
+    if(session.timeLeft<=0){
+      session.timeLeft=0; session.running=false;
+      clearInterval(session.timerId); session.timerId=null;
+      el("timerBtn").textContent = "Chạy lại đồng hồ";
+    }
+    el("liveTimer").textContent = session.timeLeft + "s";
+    el("timerFill").style.width = Math.max(0, session.timeLeft/session.totalTime*100) + "%";
+  }, 1000);
+}
+el("startSessionBtn").addEventListener("click", function(){
+  if(!students.length){ el("sessionHint").textContent = "Chưa có học sinh. Thêm học sinh ở phần “Lớp học” trước đã."; gotoTab("class"); return; }
+  if(!questions.length){ el("sessionHint").textContent = "Chưa có câu hỏi. Nạp file Word hoặc khôi phục bộ đề gốc ở phần “Bộ câu hỏi”."; gotoTab("bank"); return; }
+  var start = Math.min(+el("startAt").value||0, questions.length-1);
+  var total = +el("timePerQ").value||30;
+  session = {index:start, answers:{}, attempted:{}, revealed:false, timeLeft:total, totalTime:total, running:false, timerId:null};
+  session.attempted[start]=true;
+  el("sessionHint").textContent = "Đang chấm từ câu " + (start+1) + ". Học sinh giơ thẻ — thầy quét hoặc bấm bảng chấm nhanh.";
+  el("scanResult").innerHTML=""; el("scanConfirm").style.display="none";
+  renderLive(); startTimer(); renderScanSelect();
+  el("liveBox").scrollIntoView({behavior:"smooth", block:"start"});
+});
+el("resetSessionBtn").addEventListener("click", function(){ resetSessionState(); renderResults(); });
+el("timerBtn").addEventListener("click", function(){
+  if(!session) return;
+  if(session.running){ session.running=false; stopTimer(); el("timerBtn").textContent="Chạy lại đồng hồ"; }
+  else {
+    if(session.timeLeft<=0) session.timeLeft = session.totalTime;
+    startTimer();
+  }
+});
+el("revealBtn").addEventListener("click", function(){
+  if(!session) return;
+  session.revealed = true;
+  renderLive();
+});
+el("nextQBtn").addEventListener("click", function(){
+  if(!session) return;
+  if(session.index >= questions.length-1){ finishSession(); return; }
+  session.index++;
+  session.attempted[session.index]=true;
+  session.revealed=false;
+  session.timeLeft=session.totalTime;
+  el("scanResult").innerHTML=""; el("scanConfirm").style.display="none";
+  renderLive(); startTimer(); renderScanSelect();
+});
+el("finishBtn").addEventListener("click", function(){ finishSession(); });
+function finishSession(){
+  if(!session) return;
+  stopTimer();
+  var attempted = Object.keys(session.attempted).length;
+  el("sessionHint").textContent = "Đã kết thúc buổi chấm: đã chấm " + attempted + " câu cho " + students.length + " học sinh. Xem xếp hạng ở phần “Kết quả”.";
+  stopCamera();
+  renderResults();
+  gotoTab("results");
+}
+
+/* ================= Quick board ================= */
+function renderQuickBoard(){
+  var box = el("quickBoard");
+  el("quickEmpty").style.display = students.length ? "none" : "block";
+  if(!students.length){ box.innerHTML=""; return; }
+  var ans = currentAnswers();
+  box.innerHTML = students.map(function(s){
+    var picked = ans[s.id]||"";
+    var btns = LETTERS.map(function(L){
+      return '<button class="ansbtn '+L+(picked===L?" on":"")+'" type="button" data-qb="'+s.id+'" data-letter="'+L+'" aria-label="Học sinh '+esc(s.name)+' chọn '+L+'">'+L+'</button>';
+    }).join("");
+    return '<div class="scanrow"><span class="cardnum" style="width:36px;height:36px;font-size:14px">'+s.card+'</span>' +
+      '<span class="student-name">'+esc(s.name)+'</span>' +
+      '<span class="picked">'+(picked?("Đã nhận: "+picked):"Chưa có thẻ")+'</span>' + btns + '</div>';
+  }).join("");
+}
+el("quickBoard").addEventListener("click", function(e){
+  var b = e.target.closest("[data-qb]");
+  if(!b || !session){
+    if(b && !session) el("sessionHint").textContent = "Bấm “Bắt đầu buổi chấm” trước, rồi mới ghi đáp án.";
+    return;
+  }
+  var id = +b.getAttribute("data-qb");
+  var letter = b.getAttribute("data-letter");
+  var cur = currentAnswers()[id];
+  recordAnswer(id, cur===letter ? null : letter);
+});
+function renderScanSelect(){
+  var sel = el("scanStudent");
+  var prev = sel.value;
+  sel.innerHTML = students.map(function(s){
+    var has = session && currentAnswers()[s.id];
+    return '<option value="'+s.id+'">Thẻ '+s.card+' — '+esc(s.name)+(has?" (đã có "+has+")":"")+'</option>';
+  }).join("");
+  if(prev && students.some(function(s){return String(s.id)===prev;})) sel.value = prev;
+  else if(session){
+    var next = students.find(function(s){ return !currentAnswers()[s.id]; });
+    if(next) sel.value = String(next.id);
+  }
+}
+
+/* ================= Camera + orientation detection ================= */
+function stopCamera(){
+  if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
+  el("cam").srcObject = null;
+  el("snapBtn").disabled = true;
+  el("camOffBtn").disabled = true;
+  el("camOnBtn").disabled = false;
+}
+el("camOnBtn").addEventListener("click", function(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    el("camMsg").textContent = "Trình duyệt này không mở được camera. Thầy dùng bảng “Chấm nhanh cả lớp” bên cạnh — vẫn chấm đủ cả lớp.";
+    return;
+  }
+  el("camMsg").textContent = "Đang xin quyền camera…";
+  navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}, audio:false}).then(function(s){
+    stream = s;
+    el("cam").srcObject = s;
+    el("camMsg").textContent = "Camera đã mở. Đưa một thẻ vào khung, giữ thẳng rồi bấm “Chụp & nhận hướng thẻ”.";
+    el("snapBtn").disabled = false;
+    el("camOffBtn").disabled = false;
+    el("camOnBtn").disabled = true;
+  }).catch(function(){
+    el("camMsg").textContent = "Không mở được camera (chưa cấp quyền hoặc thiết bị bận). Thầy bấm Cho phép khi trình duyệt hỏi, hoặc dùng bảng “Chấm nhanh cả lớp”.";
+  });
+});
+el("camOffBtn").addEventListener("click", function(){ stopCamera(); el("camMsg").textContent = "Camera đã tắt."; });
+el("snapBtn").addEventListener("click", function(){
+  var video = el("cam");
+  if(!stream || !video.videoWidth){
+    el("camMsg").textContent = "Camera chưa sẵn sàng. Thầy mở camera và đợi hình hiện lên rồi chụp lại.";
+    return;
+  }
+  if(!session){
+    el("scanResult").innerHTML = '<div class="warnbox">Chưa bắt đầu buổi chấm nên chưa ghi được đáp án. Bấm “Bắt đầu buổi chấm” ở trên trước.</div>';
+    return;
+  }
+  var canvas = el("shot");
+  var ctx = canvas.getContext("2d", {willReadFrequently:true});
+  // Cover-crop video frame into the canvas.
+  var vw = video.videoWidth, vh = video.videoHeight, cw = canvas.width, ch = canvas.height;
+  var scale = Math.max(cw/vw, ch/vh);
+  var dw = vw*scale, dh = vh*scale;
+  ctx.drawImage(video, (cw-dw)/2, (ch-dh)/2, dw, dh);
+  var det = detectOrientation(canvas);
+  var sid = +el("scanStudent").value;
+  var stu = students.find(function(s){return s.id===sid;});
+  var thumb = canvas.toDataURL("image/jpeg", 0.72);
+  var html = '<img src="'+thumb+'" alt="Ảnh thẻ vừa chụp" style="width:100%;border-radius:12px;border:1px solid var(--line)">';
+  if(det){
+    html += '<p style="margin:10px 0 0;font-size:14.5px">Máy đọc được: ô định vị ở góc <b>'+det.cornerName+'</b> → chữ <b>'+det.letter+'</b> đang ở trên.' +
+      (det.confident ? ' <span class="pill green">Khá chắc</span>' : ' <span class="pill grey">Chưa chắc — thầy kiểm tra lại</span>') + '</p>';
+    showScanConfirm(stu, det.letter);
+  } else {
+    html += '<p style="margin:10px 0 0;font-size:14.5px">Máy chưa đọc rõ hướng thẻ trong ảnh này (thẻ chưa đủ to trong khung, bị nghiêng, hoặc thiếu sáng). Thầy đưa thẻ lại gần hơn, giữ thẳng, chụp lại — hoặc chọn đáp án đúng bằng tay ngay bên dưới.</p>';
+    showScanConfirm(stu, null);
+  }
+  el("scanResult").innerHTML = html;
+});
+function showScanConfirm(stu, letter){
+  var box = el("scanConfirm");
+  if(!stu){ box.style.display="none"; return; }
+  box.style.display = "block";
+  el("confirmName").textContent = "thẻ " + stu.card + " — " + stu.name;
+  box.querySelectorAll("[data-confirm]").forEach(function(b){
+    b.classList.toggle("on", letter && b.getAttribute("data-confirm")===letter);
+  });
+}
+el("scanConfirm").addEventListener("click", function(e){
+  var b = e.target.closest("[data-confirm]");
+  if(b){
+    if(!session) return;
+    var sid = +el("scanStudent").value;
+    recordAnswer(sid, b.getAttribute("data-letter"));
+    var stu = students.find(function(s){return s.id===sid;});
+    el("scanResult").innerHTML = '<div class="okbox">Đã ghi đáp án <b>'+b.getAttribute("data-letter")+'</b> cho thẻ '+stu.card+' — '+esc(stu.name)+'.</div>';
+    el("scanConfirm").style.display = "none";
+    renderScanSelect();
+    return;
+  }
+  if(e.target.id==="clearScanBtn"){
+    el("scanConfirm").style.display = "none";
+    el("scanResult").innerHTML = '<p class="hint">Đã bỏ qua thẻ này. Chọn học sinh khác hoặc chụp lại.</p>';
+  }
+});
+function detectOrientation(canvas){
+  // Downscale for speed, threshold dark pixels, find card bbox, compare corner darkness.
+  var small = document.createElement("canvas");
+  small.width = 160; small.height = 120;
+  var sctx = small.getContext("2d", {willReadFrequently:true});
+  sctx.drawImage(canvas, 0, 0, 160, 120);
+  var data;
+  try{ data = sctx.getImageData(0,0,160,120).data; }catch(err){ return null; }
+  var dark = [];
+  for(var y=0;y<120;y++){
+    for(var x=0;x<160;x++){
+      var i=(y*160+x)*4;
+      var lum = 0.299*data[i]+0.587*data[i+1]+0.114*data[i+2];
+      if(lum<110) dark.push([x,y]);
+    }
+  }
+  if(dark.length<250) return null;
+  dark.sort(function(a,b){return a[0]-b[0]});
+  var x0 = dark[Math.floor(dark.length*0.03)][0], x1 = dark[Math.floor(dark.length*0.97)][0];
+  dark.sort(function(a,b){return a[1]-b[1]});
+  var y0 = dark[Math.floor(dark.length*0.03)][1], y1 = dark[Math.floor(dark.length*0.97)][1];
+  var w = Math.max(1, x1-x0), h = Math.max(1, y1-y0);
+  if(w<50 || h<40) return null;
+  function cornerRatio(cx0, cy0){
+    var total=0, d=0;
+    var rx0 = Math.round(x0 + w*cx0), rx1 = Math.round(x0 + w*(cx0+0.18));
+    var ry0 = Math.round(y0 + h*cy0), ry1 = Math.round(y0 + h*(cy0+0.18));
+    for(var yy=ry0; yy<=ry1; yy++){
+      for(var xx=rx0; xx<=rx1; xx++){
+        if(xx<0||yy<0||xx>=160||yy>=120) continue;
+        var j=(yy*160+xx)*4;
+        var lum2 = 0.299*data[j]+0.587*data[j+1]+0.114*data[j+2];
+        total++; if(lum2<110) d++;
+      }
+    }
+    return total? d/total : 0;
+  }
+  var scores = {
+    TR: cornerRatio(0.80, 0.06),
+    BR: cornerRatio(0.80, 0.76),
+    BL: cornerRatio(0.02, 0.76),
+    TL: cornerRatio(0.02, 0.06)
+  };
+  var order = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
+  var best = order[0], second = order[1];
+  if(scores[best] < 0.45) return null;
+  var map = {TR:{letter:"A", name:"trên–phải"}, BR:{letter:"B", name:"dưới–phải"}, BL:{letter:"C", name:"dưới–trái"}, TL:{letter:"D", name:"trên–trái"}};
+  return {letter: map[best].letter, cornerName: map[best].name, confident: (scores[best]-scores[second])>0.15, scores: scores};
+}
+
+/* ================= Results ================= */
+function computeResults(){
+  if(!session) return null;
+  var attemptedIdx = Object.keys(session.attempted).map(Number).sort(function(a,b){return a-b;});
+  var rows = students.map(function(s){
+    var correct=0, answered=0;
+    attemptedIdx.forEach(function(qi){
+      var a = (session.answers[qi]||{})[s.id];
+      if(a){ answered++; if(a===LETTERS[questions[qi].correct]) correct++; }
+    });
+    return {student:s, correct:correct, answered:answered, total:attemptedIdx.length, pct: attemptedIdx.length? Math.round(correct/attemptedIdx.length*100):0};
+  });
+  rows.sort(function(a,b){ return b.correct-a.correct || a.student.card-b.student.card; });
+  var perQ = attemptedIdx.map(function(qi){
+    var ans = session.answers[qi]||{};
+    var got = Object.keys(ans).length, corr=0, dist={A:0,B:0,C:0,D:0};
+    Object.keys(ans).forEach(function(id){ dist[ans[id]]++; if(ans[id]===LETTERS[questions[qi].correct]) corr++; });
+    return {qi:qi, got:got, correct:corr, dist:dist};
+  });
+  return {rows:rows, perQ:perQ, attempted:attemptedIdx.length};
+}
+function renderResults(){
+  var res = computeResults();
+  if(!res){
+    el("resultsLead").textContent = "Chưa có buổi chấm nào. Bắt đầu chấm ở phần “Quét & chấm”, kết quả sẽ tổng kết tại đây.";
+    el("ranking").innerHTML = '<p class="hint">Chưa có dữ liệu.</p>';
+    el("perQuestion").innerHTML = '<p class="hint">Chưa có dữ liệu.</p>';
+    return;
+  }
+  var totalCorrect = res.rows.reduce(function(a,r){return a+r.correct;},0);
+  var totalAnswered = res.rows.reduce(function(a,r){return a+r.answered;},0);
+  el("resultsLead").textContent = (el("className").value.trim()||"Lớp chưa đặt tên") + " · đã chấm " + res.attempted + " câu · " + students.length + " học sinh · " + totalCorrect + "/" + totalAnswered + " lượt trả lời đúng.";
+  el("ranking").innerHTML = res.rows.map(function(r,i){
+    return '<div class="rankrow'+(i===0?" top1":"")+'"><span class="rankpos">'+(i+1)+'</span>' +
+      '<span style="flex:0 0 150px;min-width:110px"><b>'+esc(r.student.name)+'</b><br><span class="hint">Thẻ '+r.student.card+'</span></span>' +
+      '<span class="bar"><i style="width:'+r.pct+'%"></i></span>' +
+      '<b>'+r.correct+'/'+r.total+'</b></div>';
+  }).join("") || '<p class="hint">Chưa có học sinh.</p>';
+  el("perQuestion").innerHTML = res.perQ.map(function(p){
+    var q = questions[p.qi];
+    var rate = p.got? Math.round(p.correct/p.got*100):0;
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--line)"><b>Câu '+(p.qi+1)+':</b> '+renderMathInText(q.text)+
+      '<div class="hint" style="margin-top:4px">Đáp án đúng: <b>'+LETTERS[q.correct]+'</b> · '+p.correct+'/'+p.got+' đúng ('+rate+'%) · Phân bố: A '+p.dist.A+' · B '+p.dist.B+' · C '+p.dist.C+' · D '+p.dist.D+'</div></div>';
+  }).join("") || '<p class="hint">Chưa chấm câu nào.</p>';
+}
+el("csvBtn").addEventListener("click", function(){
+  var res = computeResults();
+  if(!res){ el("copyMsg").textContent = "Chưa có buổi chấm nào để tải."; return; }
+  var lines = ["STT,Họ và tên,Số thẻ,Số câu đúng,Tổng số câu đã chấm,Tỉ lệ đúng (%)"];
+  res.rows.forEach(function(r,i){
+    lines.push([i+1, '"'+r.student.name.replace(/"/g,'""')+'"', r.student.card, r.correct, r.total, r.pct].join(","));
+  });
+  var blob = new Blob(["\ufeff"+lines.join("\r\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "ket-qua-quet-the-toan-12.csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+});
+el("copySummaryBtn").addEventListener("click", function(){
+  var res = computeResults();
+  if(!res){ el("copyMsg").textContent = "Chưa có buổi chấm nào để chép."; return; }
+  var top = res.rows.slice(0,3).map(function(r,i){ return (i+1)+". "+r.student.name+" ("+r.correct+"/"+r.total+")"; }).join("; ");
+  var text = "Kết quả quét thẻ Toán 12 — lớp " + (el("className").value.trim()||"") + ": đã chấm " + res.attempted + " câu, " + students.length + " học sinh. Dẫn đầu: " + (top||"chưa có") + ".";
+  function done(){ el("copyMsg").textContent = "Đã chép tóm tắt: " + text; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){ el("copyMsg").textContent = text; });
+  } else {
+    el("copyMsg").textContent = text;
+  }
+});
+renderRoster();
+renderBank();
+renderResults();
+</script>
+</body>
+</html>
