@@ -99,7 +99,10 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute
 .paper-card .edge.c{bottom:4%;left:50%;transform:translateX(-50%);font-size:clamp(22px,4.5vw,34px)}
 .paper-card .edge.d{top:50%;left:4%;transform:translateY(-50%);font-size:clamp(22px,4.5vw,34px)}
 .paper-card .edge small{display:block;font-size:9px;letter-spacing:.08em;font-weight:700;color:#555}
-.paper-card .orient{position:absolute;top:4%;right:4%;width:20%;aspect-ratio:1;background:#111;border-radius:3px}
+.paper-card .orient{position:absolute;top:0;right:0;width:24%;aspect-ratio:1;background:#111;border-radius:0 11px 0 6px}
+.paper-card .codestrip{position:absolute;left:50%;transform:translateX(-50%);bottom:15%;width:56%;height:7%;display:flex;gap:2.5%;background:#fff;border:1.5px solid #111;border-radius:2px;padding:1.5px}
+.paper-card .codestrip i{flex:1 1 0;background:#fff;border:1px solid #111;border-radius:1px}
+.paper-card .codestrip i.on{background:#111}
 .paper-card .num{font-size:clamp(44px,9vw,76px);font-weight:900;line-height:1;margin-top:16%}
 .paper-card .sname{font-size:clamp(12px,2.4vw,17px);font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .paper-card .foot{position:absolute;bottom:9%;left:0;right:0;font-size:9.5px;color:#666;letter-spacing:.05em}
@@ -130,6 +133,16 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute
 .scanrow .picked{font-weight:800;font-size:13px;min-width:86px}
 video#cam{width:100%;border-radius:14px;background:#000;aspect-ratio:4/3;object-fit:cover;display:block}
 .camframe{position:relative}
+.camframe canvas.overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:14px}
+.sweepbar{height:12px;background:var(--surface2);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:10px}
+.sweepbar i{display:block;height:100%;background:var(--teal2);transition:width .4s}
+.detchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.detchip{border:1.5px solid var(--line);background:var(--surface2);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:700}
+.detchip.done{border-color:var(--green);background:rgba(22,163,74,.13)}
+.detchip.pending{border-color:var(--amber);background:#fef3c7;color:#713f12}
+@media (prefers-color-scheme: dark){.detchip.pending{background:#3a2a08;color:#fde68a}}
+.detchip select{width:auto;padding:4px 6px;font-size:13px;margin-left:6px}
+.detchip .mini{border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:3px 8px;font-weight:800;margin-left:4px}
 .camframe .guide{position:absolute;left:50%;top:50%;width:68%;aspect-ratio:1;transform:translate(-50%,-50%);border:3px dashed #fff;border-radius:14px;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.28)}
 .camframe .guide span{position:absolute;left:50%;top:-26px;transform:translateX(-50%);background:#111;color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
 .camframe .guide i{position:absolute;width:22px;height:22px;border:4px solid #f59e0b}
@@ -267,7 +280,7 @@ canvas#shot{display:none}
       <ul style="font-size:14.5px;margin:10px 0 0;padding-left:20px">
         <li><b>Xoay chữ đáp án lên trên.</b> Muốn chọn A thì xoay cho chữ A ở cạnh trên cùng; chọn B thì chữ B lên trên, tương tự C, D.</li>
         <li>Giơ thẻ thẳng, mặt số hướng về phía thầy, giữ yên đến khi thầy nói “đã nhận”.</li>
-        <li>Ô vuông đen to ở góc là ô định vị để máy quét nhận hướng thẻ — đừng che, đừng vẽ thêm vào đó. Thầy in lại bộ thẻ từ bản app này: thẻ in từ bản cũ có ô đen nhỏ hơn nên máy khó nhận, cần in lại để quét nhạy.</li>
+        <li>Ô đen to ở góc phải trên và dãy ô mã số ở gần cạnh dưới là để máy quét nhận hướng thẻ và nhận đúng số thẻ khi quét cả lớp — đừng che, đừng vẽ thêm vào đó. <b>Thầy in lại bộ thẻ từ bản app này:</b> thẻ in từ bản cũ không có dãy mã số nên máy quét cả lớp chỉ đọc được đáp án mà không biết là thẻ của em nào, thầy phải gán tay từng thẻ. Dãy mã số nhận riêng được tối đa 63 thẻ; lớp trên 63 em thì thẻ từ số 64 trở đi quét xong thầy gán tay ở phần xác nhận.</li>
       </ul>
       <div class="cards-toolbar" style="margin-top:14px">
         <div>
@@ -291,7 +304,7 @@ canvas#shot{display:none}
   <section class="panel" id="sec-scan">
     <div class="card">
       <h2>Buổi chấm trực tiếp</h2>
-      <p class="lead">Chọn câu hỏi, chiếu lên màn hình cho cả lớp, học sinh giơ thẻ. Thầy quét từng thẻ bằng camera, hoặc chấm nhanh cả lớp bằng bảng bấm bên dưới — hai cách ghi vào cùng một bảng đáp án.</p>
+      <p class="lead">Chọn câu hỏi, chiếu lên màn hình cho cả lớp, học sinh giơ thẻ. Thầy quét cả lớp trong một khung hình bằng camera, hoặc chấm nhanh cả lớp bằng bảng bấm bên dưới — hai cách ghi vào cùng một bảng đáp án.</p>
       <div class="grid2" style="margin-top:12px">
         <div>
           <label for="timePerQ">Thời gian mỗi câu</label>
@@ -340,40 +353,34 @@ canvas#shot{display:none}
 
     <div class="grid2">
       <div class="card">
-        <h3>Quét từng thẻ bằng camera</h3>
-        <p class="lead">Chọn học sinh, đưa thẻ của em vào khung vuông sao cho thẻ vừa khít khung và ô đen ở góc lọt hẳn trong khung, giữ thẳng rồi bấm “Chụp &amp; nhận hướng”. Máy đọc ô đen ở góc thẻ để biết chữ nào đang ở trên. Có 3 cách quét: chụp thủ công, quét tự động (máy tự nhận khi thẻ vào khung), hoặc chụp bằng máy ảnh của điện thoại nếu camera trong trang không mở được. Nếu máy đọc sai, thầy sửa bằng một lần bấm ở dưới — đáp án cuối cùng luôn do thầy chốt.</p>
-        <label for="scanStudent" style="margin-top:12px">Học sinh đang quét</label>
-        <select id="scanStudent"></select>
+        <h3>Quét cả lớp trong một khung hình</h3>
+        <p class="lead">Không cần chọn từng học sinh, không chụp từng thẻ. Thầy giơ điện thoại lên, đưa cả lớp vào một khung hình, máy tự nhận nhiều thẻ cùng lúc — đọc ô đen ở góc để biết đáp án và đọc dãy mã số để biết thẻ của em nào — rồi tự ghi đáp án, quét liên tục cho đến khi đủ lớp. Học sinh giơ thẻ thẳng, không nghiêng chéo, mặt số hướng về phía thầy, thẻ không bị che và không chồng lên nhau. Nếu lớp đông, thầy quét theo từng hàng: quét xong hàng trước thì lia máy sang hàng sau, số thẻ đã nhận được giữ nguyên. Thẻ nào máy đọc chưa chắc sẽ hiện ở dưới để thầy bấm xác nhận một lần, không phải chụp lại.</p>
         <div class="btnrow">
           <button class="btn" id="camOnBtn" type="button">Mở camera sau</button>
           <button class="btn secondary" id="camOffBtn" type="button" disabled>Tắt camera</button>
-          <button class="btn gold" id="autoScanBtn" type="button" disabled>Quét tự động: Tắt</button>
+        </div>
+        <div class="btnrow">
+          <button class="btn gold" id="sweepBtn" type="button" disabled>Quét cả lớp: Tắt</button>
+          <button class="btn secondary" id="snapClassBtn" type="button" disabled>Chụp 1 ảnh cả lớp</button>
         </div>
         <div class="btnrow">
           <button class="btn secondary" id="photoBtn" type="button">Chụp bằng máy ảnh của điện thoại</button>
         </div>
         <input type="file" id="photoInput" accept="image/*" capture="environment" hidden />
-        <p class="hint" id="autoScanStatus"></p>
+        <p class="hint" id="sweepStatus">Mở camera rồi bấm “Quét cả lớp”. Máy quét liên tục khoảng 2 lần mỗi giây; thầy giữ máy yên 2–3 giây cho mỗi góc nhìn để máy kịp nhận hết thẻ trong khung.</p>
+        <div class="sweepbar" aria-hidden="true"><i id="sweepFill" style="width:0%"></i></div>
+        <p style="font-weight:800;margin:10px 0 0" id="sweepCount">Đã nhận 0 / 0 học sinh</p>
         <div class="camframe" style="margin-top:12px">
           <video id="cam" playsinline muted autoplay></video>
-          <div class="guide"><span>Đặt 1 thẻ vừa khung vuông, giữ thẳng</span><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+          <canvas class="overlay" id="camOverlay"></canvas>
+          <div class="guide"><span>Đưa cả lớp vào khung — nhiều thẻ cùng lúc</span><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
         </div>
         <p class="hint" id="camMsg">Camera chưa mở. Trên điện thoại, trình duyệt sẽ hỏi quyền dùng camera — thầy bấm Cho phép.</p>
-        <div class="btnrow">
-          <button class="btn gold" id="snapBtn" type="button" disabled>Chụp &amp; nhận hướng thẻ</button>
-        </div>
         <canvas id="shot" width="640" height="480"></canvas>
+        <canvas id="photoThumb" style="display:none;width:100%;border-radius:12px;border:1px solid var(--line);margin-top:10px"></canvas>
         <div id="scanResult" style="margin-top:12px"></div>
-        <div id="scanConfirm" style="display:none;margin-top:10px">
-          <p style="font-weight:700;margin:0 0 8px">Đáp án ghi cho <span id="confirmName"></span>:</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="ansbtn A" data-confirm="A" type="button">A</button>
-            <button class="ansbtn B" data-confirm="B" type="button">B</button>
-            <button class="ansbtn C" data-confirm="C" type="button">C</button>
-            <button class="ansbtn D" data-confirm="D" type="button">D</button>
-            <button class="btn secondary small" id="clearScanBtn" type="button">Chưa rõ — bỏ qua</button>
-          </div>
-        </div>
+        <div id="sweepPending"></div>
+        <div class="detchips" id="sweepChips"></div>
       </div>
 
       <div class="card">
@@ -620,7 +627,7 @@ function renderRoster(){
       '<button class="iconbtn" type="button" data-del="' + s.id + '">Xóa</button></div>';
   }).join("");
   if(editingId!=null){ var ri=el("renameInput"); if(ri){ ri.focus(); ri.select(); } }
-  renderCards(); renderQuickBoard(); renderScanSelect(); updateChips();
+  renderCards(); renderQuickBoard(); renderSweepStatus(); updateChips();
 }
 function addStudent(name){
   name = (name||"").trim();
@@ -699,14 +706,23 @@ function renderBank(){
   sel.innerHTML = questions.map(function(q,i){ return '<option value="'+i+'">Câu '+(i+1)+'</option>'; }).join("");
   updateChips();
 }
+function cardCodeBits(n){
+  if(n>63) return [0,0,0,0,0,0,0]; // lớp trên 63 em: thẻ 64+ không có mã riêng, máy chỉ đọc đáp án và thầy gán tay
+  var bits = [];
+  for(var i=5;i>=0;i--) bits.push((n>>i)&1);
+  var sum = bits.reduce(function(a,b){return a+b;},0);
+  bits.push(sum%2); // bit chẵn lẻ: tổng số ô đen luôn chẵn, máy loại được ô đọc nhầm
+  return bits;
+}
 function renderCards(){
   var grid = el("cardsGrid");
   var printGrid = el("printGrid");
   el("cardsEmpty").style.display = students.length ? "none" : "block";
   var html = students.map(function(s){
+    var strip = '<span class="codestrip" aria-hidden="true">' + cardCodeBits(s.card).map(function(b){ return '<i class="'+(b?"on":"")+'"></i>'; }).join("") + '</span>';
     return '<div class="paper-card"><span class="cut">✂</span><span class="orient" aria-hidden="true"></span>' +
       '<span class="edge a">A<small>TRÊN</small></span><span class="edge b">B</span><span class="edge c">C</span><span class="edge d">D</span>' +
-      '<div class="num">'+s.card+'</div><div class="sname">'+esc(s.name)+'</div>' +
+      '<div class="num">'+s.card+'</div><div class="sname">'+esc(s.name)+'</div>' + strip +
       '<div class="foot">XOAY CHỮ ĐÁP ÁN LÊN TRÊN · '+esc(el("className").value.trim()||"TOÁN 12")+'</div></div>';
   }).join("");
   grid.innerHTML = html;
@@ -1113,8 +1129,9 @@ function resetSessionState(){
   el("liveBox").style.display = "none";
   el("sessionHint").textContent = "Chưa bắt đầu. Cần ít nhất 1 học sinh và 1 câu hỏi.";
   el("scanResult").innerHTML = "";
-  el("scanConfirm").style.display = "none";
-  renderQuickBoard(); updateChips();
+  el("sweepPending").innerHTML = ""; el("sweepChips").innerHTML = "";
+  pendingDets = []; if(typeof renderPending==="function") renderPending();
+  renderQuickBoard(); renderSweepStatus(); updateChips();
 }
 function stopTimer(){ if(session && session.timerId){ clearInterval(session.timerId); session.timerId=null; } }
 function currentAnswers(){
@@ -1126,7 +1143,7 @@ function recordAnswer(studentId, letter){
   if(!session.answers[session.index]) session.answers[session.index]={};
   if(letter==null) delete session.answers[session.index][studentId];
   else session.answers[session.index][studentId]=letter;
-  renderLiveStats(); renderQuickBoard(); renderResults();
+  renderLiveStats(); renderQuickBoard(); renderResults(); renderSweepStatus();
 }
 function renderLive(){
   if(!session) return;
@@ -1190,8 +1207,9 @@ el("startSessionBtn").addEventListener("click", function(){
   session = {index:start, answers:{}, attempted:{}, revealed:false, timeLeft:total, totalTime:total, running:false, timerId:null};
   session.attempted[start]=true;
   el("sessionHint").textContent = "Đang chấm từ câu " + (start+1) + ". Học sinh giơ thẻ — thầy quét hoặc bấm bảng chấm nhanh.";
-  el("scanResult").innerHTML=""; el("scanConfirm").style.display="none";
-  renderLive(); startTimer(); renderScanSelect();
+  el("scanResult").innerHTML=""; el("sweepPending").innerHTML=""; el("sweepChips").innerHTML="";
+  pendingDets = []; renderPending();
+  renderLive(); startTimer(); renderSweepStatus();
   el("liveBox").scrollIntoView({behavior:"smooth", block:"start"});
 });
 el("resetSessionBtn").addEventListener("click", function(){ resetSessionState(); renderResults(); });
@@ -1215,8 +1233,9 @@ el("nextQBtn").addEventListener("click", function(){
   session.attempted[session.index]=true;
   session.revealed=false;
   session.timeLeft=session.totalTime;
-  el("scanResult").innerHTML=""; el("scanConfirm").style.display="none";
-  renderLive(); startTimer(); renderScanSelect();
+  pendingDets = []; renderPending();
+  el("scanResult").innerHTML=""; el("sweepPending").innerHTML=""; el("sweepChips").innerHTML="";
+  renderLive(); startTimer(); renderSweepStatus();
 });
 el("finishBtn").addEventListener("click", function(){ finishSession(); });
 function finishSession(){
@@ -1256,22 +1275,34 @@ el("quickBoard").addEventListener("click", function(e){
   var cur = currentAnswers()[id];
   recordAnswer(id, cur===letter ? null : letter);
 });
-function renderScanSelect(){
-  var sel = el("scanStudent");
-  var prev = sel.value;
-  sel.innerHTML = students.map(function(s){
-    var has = session && currentAnswers()[s.id];
-    return '<option value="'+s.id+'">Thẻ '+s.card+' — '+esc(s.name)+(has?" (đã có "+has+")":"")+'</option>';
-  }).join("");
-  if(prev && students.some(function(s){return String(s.id)===prev;})) sel.value = prev;
-  else if(session){
-    var next = students.find(function(s){ return !currentAnswers()[s.id]; });
-    if(next) sel.value = String(next.id);
-  }
+function renderSweepStatus(){
+  var got = session ? Object.keys(currentAnswers()).length : 0;
+  var total = students.length;
+  el("sweepCount").textContent = "Đã nhận " + got + " / " + total + " học sinh" + (session ? (" — câu " + (session.index+1)) : "");
+  el("sweepFill").style.width = total ? Math.round(got/total*100) + "%" : "0%";
+  var chips = el("sweepChips");
+  if(chips && session){
+    chips.innerHTML = students.map(function(s){
+      var a = currentAnswers()[s.id];
+      return '<span class="detchip' + (a?" done":"") + '">Thẻ ' + s.card + ' · ' + esc(s.name) + (a ? " — " + a : " — chưa có") + '</span>';
+    }).join("");
+  } else if(chips){ chips.innerHTML = ""; }
 }
 
-/* ================= Camera + orientation detection ================= */
-var autoScanOn = false, autoScanTimer = null, autoScanBusy = false, lastAutoRecord = 0;
+/* ================= Camera: quét cả lớp trong một khung hình =================
+   Mỗi khung hình được dò nhiều thẻ cùng lúc:
+   1) Ngưỡng thích ứng theo vùng sáng (integral image) để tách thẻ trắng /
+      viền đen ngay cả khi một góc lớp sáng hơn góc còn lại.
+   2) Thành phần liên thông của vùng giấy trắng ở ảnh thu nhỏ: mỗi thẻ là
+      một vùng trắng gần vuông, hộp bao của nó (nới thêm viền) là vị trí
+      thẻ. Dự phòng bằng vòng viền đen nếu không thấy vùng trắng nào.
+   3) Góc có ô đen định vị to nhất -> đáp án; xoay thẻ về đúng chiều rồi
+      đọc dãy mã số 6 bit + 1 bit chẵn lẻ ở gần cạnh dưới -> số thẻ.
+   Thẻ cũ (không có dãy mã) vẫn đọc được đáp án, nhưng số thẻ phải gán tay. */
+var sweepOn = false, sweepTimer = null, sweepBusy = false, sweepQuestion = -1;
+var pendingDets = []; // {key, number|null, letter, studentId|null}
+var lastOverlay = [];
+
 function ensureSession(){
   if(session) return true;
   if(!students.length || !questions.length){
@@ -1282,29 +1313,31 @@ function ensureSession(){
   var total = +el("timePerQ").value||30;
   session = {index:start, answers:{}, attempted:{}, revealed:false, timeLeft:total, totalTime:total, running:false, timerId:null};
   session.attempted[start]=true;
-  el("sessionHint").textContent = "Đang chấm từ câu " + (start+1) + " (tự bắt đầu khi thầy quét thẻ đầu tiên). Học sinh giơ thẻ — thầy quét hoặc bấm bảng chấm nhanh.";
-  renderLive(); startTimer(); renderScanSelect();
+  el("sessionHint").textContent = "Đang chấm từ câu " + (start+1) + " (tự bắt đầu khi thầy quét được thẻ đầu tiên). Học sinh giơ thẻ — thầy quét cả lớp hoặc bấm bảng chấm nhanh.";
+  renderLive(); startTimer(); renderSweepStatus();
   return true;
 }
-function stopAutoScan(silent){
-  autoScanOn = false;
-  if(autoScanTimer){ clearInterval(autoScanTimer); autoScanTimer=null; }
-  el("autoScanBtn").textContent = "Quét tự động: Tắt";
-  if(!silent) el("autoScanStatus").textContent = "";
+function stopSweep(silent){
+  sweepOn = false;
+  if(sweepTimer){ clearInterval(sweepTimer); sweepTimer=null; }
+  el("sweepBtn").textContent = "Quét cả lớp: Tắt";
+  el("sweepBtn").disabled = !stream;
+  if(!silent) el("sweepStatus").textContent = "Đã dừng quét cả lớp. Bấm lại để quét tiếp, hoặc dùng bảng chấm nhanh.";
+  clearOverlay();
 }
 function stopCamera(){
-  stopAutoScan(true);
+  stopSweep(true);
   if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
   el("cam").srcObject = null;
-  el("snapBtn").disabled = true;
+  el("snapClassBtn").disabled = true;
   el("camOffBtn").disabled = true;
-  el("autoScanBtn").disabled = true;
+  el("sweepBtn").disabled = true;
   el("camOnBtn").disabled = false;
-  el("autoScanStatus").textContent = "";
+  el("sweepStatus").textContent = "Camera đã tắt.";
 }
 el("camOnBtn").addEventListener("click", function(){
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    el("camMsg").textContent = "Trình duyệt này không mở được camera trong trang. Thầy bấm “Chụp bằng máy ảnh của điện thoại” ở trên — cách đó dùng máy ảnh của máy nên vẫn quét được.";
+    el("camMsg").textContent = "Trình duyệt này không mở được camera trong trang. Thầy bấm “Chụp bằng máy ảnh của điện thoại” ở trên — cách đó dùng máy ảnh của máy nên vẫn quét được cả lớp trong một ảnh.";
     return;
   }
   el("camMsg").textContent = "Đang xin quyền camera…";
@@ -1325,10 +1358,10 @@ el("camOnBtn").addEventListener("click", function(){
       video.srcObject = s;
       var played = video.play ? video.play() : null;
       if(played && played.catch) played.catch(function(){});
-      el("camMsg").textContent = "Camera đã mở. Đưa một thẻ vào khung vuông cho vừa khít, giữ thẳng rồi bấm “Chụp & nhận hướng thẻ”, hoặc bật “Quét tự động” để máy tự nhận.";
-      el("snapBtn").disabled = false;
+      el("camMsg").textContent = "Camera đã mở. Giơ máy lên, đưa cả lớp vào khung, rồi bấm “Quét cả lớp” — máy tự nhận nhiều thẻ cùng lúc.";
+      el("snapClassBtn").disabled = false;
       el("camOffBtn").disabled = false;
-      el("autoScanBtn").disabled = false;
+      el("sweepBtn").disabled = false;
       el("camOnBtn").disabled = true;
     }).catch(function(err){
       if(err && err.name==="NotAllowedError"){
@@ -1342,42 +1375,16 @@ el("camOnBtn").addEventListener("click", function(){
   tryNext();
 });
 el("camOffBtn").addEventListener("click", function(){ stopCamera(); el("camMsg").textContent = "Camera đã tắt."; });
-el("autoScanBtn").addEventListener("click", function(){
-  if(!stream){ el("autoScanStatus").textContent = "Mở camera trước đã."; return; }
-  if(autoScanOn){ stopAutoScan(); el("autoScanStatus").textContent = "Đã tắt quét tự động."; return; }
+el("sweepBtn").addEventListener("click", function(){
+  if(!stream){ el("sweepStatus").textContent = "Mở camera trước đã."; return; }
+  if(sweepOn){ stopSweep(); return; }
   if(!ensureSession()) return;
-  autoScanOn = true;
-  el("autoScanBtn").textContent = "Quét tự động: Bật";
-  el("autoScanStatus").textContent = "Đang quét tự động: đưa từng thẻ vào khung, máy tự ghi khi nhận chắc chắn rồi chuyển sang học sinh tiếp theo. Thầy vẫn sửa tay được ở bảng chấm nhanh.";
-  autoScanTimer = setInterval(autoScanTick, 750);
+  sweepOn = true; sweepQuestion = session.index; pendingDets = [];
+  el("sweepBtn").textContent = "Quét cả lớp: Bật — bấm để dừng";
+  el("sweepStatus").textContent = "Đang quét cả lớp: giữ máy yên 2–3 giây cho mỗi góc nhìn. Thẻ đọc chắc sẽ tự ghi ngay; thẻ chưa chắc hiện ở dưới để thầy xác nhận.";
+  sweepTimer = setInterval(sweepTick, 500);
+  sweepTick();
 });
-function autoScanTick(){
-  if(!autoScanOn || !stream || autoScanBusy) return;
-  if(!session) return;
-  if(Date.now()-lastAutoRecord < 1200) return;
-  var video = el("cam");
-  if(!video.videoWidth || video.readyState<2) return;
-  autoScanBusy = true;
-  try{
-    var canvas = captureVideoFrame(video);
-    var det = detectOrientation(canvas);
-    if(det && det.confident){
-      var sid = +el("scanStudent").value;
-      var stu = students.find(function(s){return s.id===sid;});
-      if(stu && !currentAnswers()[sid]){
-        recordAnswer(sid, det.letter);
-        lastAutoRecord = Date.now();
-        el("scanResult").innerHTML = '<div class="okbox">Quét tự động đã ghi đáp án <b>'+det.letter+'</b> cho thẻ '+stu.card+' — '+esc(stu.name)+'.</div>' + cornerDebugHtml(det);
-        el("scanConfirm").style.display = "none";
-        renderScanSelect();
-        el("autoScanStatus").textContent = "Đã ghi thẻ "+stu.card+". Đưa thẻ tiếp theo vào khung…";
-      }
-    } else if(det){
-      el("autoScanStatus").textContent = "Thấy thẻ nhưng chưa chắc hướng (góc tối nhất: "+det.cornerName+"). Giữ thẻ thẳng, đưa lại gần hơn.";
-    }
-  }catch(err){ /* keep scanning */ }
-  autoScanBusy = false;
-}
 function captureVideoFrame(video){
   var canvas = el("shot");
   var ctx = canvas.getContext("2d", {willReadFrequently:true});
@@ -1387,33 +1394,148 @@ function captureVideoFrame(video){
   ctx.drawImage(video, (cw-dw)/2, (ch-dh)/2, dw, dh);
   return canvas;
 }
-function cornerDebugHtml(det){
-  if(!det || !det.scores) return "";
-  var names = {TR:"Trên–phải (A)", BR:"Dưới–phải (B)", BL:"Dưới–trái (C)", TL:"Trên–trái (D)"};
-  var rows = Object.keys(names).map(function(k){
-    var pct = Math.round((det.scores[k]||0)*100);
-    return '<div class="cornerbar"><span>Góc '+names[k]+'</span><span class="bar"><i style="width:'+pct+'%"></i></span><b>'+pct+'%</b></div>';
-  }).join("");
-  return '<div style="margin-top:10px"><p style="font-weight:700;margin:0 0 4px;font-size:13px">Độ tối 4 góc — góc có ô đen phải tối hơn hẳn các góc còn lại:</p>' + rows + '</div>';
+function sweepTick(){
+  if(!sweepOn || !stream || sweepBusy || !session) return;
+  if(session.index !== sweepQuestion){ sweepQuestion = session.index; pendingDets = []; }
+  var video = el("cam");
+  if(!video.videoWidth || video.readyState<2) return;
+  sweepBusy = true;
+  try{
+    var canvas = captureVideoFrame(video);
+    var dets = detectCardsInCanvas(canvas);
+    processDetections(dets, canvas.width, canvas.height);
+  }catch(err){ /* giữ vòng quét chạy tiếp */ }
+  sweepBusy = false;
 }
-function processCapturedImage(canvas, thumb){
-  var det = detectOrientation(canvas);
-  var sid = +el("scanStudent").value;
-  var stu = students.find(function(s){return s.id===sid;});
-  var html = "";
-  if(thumb) html += '<img src="'+thumb+'" alt="Ảnh thẻ vừa chụp" style="width:100%;border-radius:12px;border:1px solid var(--line)">';
-  if(det){
-    html += '<p style="margin:10px 0 0;font-size:14.5px">Máy đọc được: ô định vị ở góc <b>'+det.cornerName+'</b> → chữ <b>'+det.letter+'</b> đang ở trên.' +
-      (det.confident ? ' <span class="pill green">Khá chắc</span>' : ' <span class="pill grey">Chưa chắc — thầy kiểm tra lại</span>') + '</p>' + cornerDebugHtml(det);
-    showScanConfirm(stu, det.letter);
-  } else {
-    html += '<p style="margin:10px 0 0;font-size:14.5px">Máy chưa đọc rõ hướng thẻ trong ảnh này. Thầy đưa thẻ lại gần hơn cho vừa khít khung vuông, giữ thẳng, đủ sáng, không che ô đen ở góc, rồi chụp lại — hoặc chọn đáp án đúng bằng tay ngay bên dưới.</p>';
-    if(det===null && window.__lastScores) html += cornerDebugHtml({scores: window.__lastScores});
-    showScanConfirm(stu, null);
+function processDetections(dets, srcW, srcH){
+  lastOverlay = dets;
+  drawOverlay(dets, srcW, srcH);
+  if(!dets.length){
+    el("sweepStatus").textContent = "Chưa thấy thẻ nào trong khung. Đưa máy lại gần hơn, để thẻ lọt hẳn trong khung, đủ sáng, không chồng lên nhau.";
+    return;
   }
-  el("scanResult").innerHTML = html;
+  var newly = 0, uncertain = 0;
+  dets.forEach(function(d){
+    if(d.number!=null){
+      var stu = students.find(function(s){return s.card===d.number;});
+      if(!stu) return;
+      if(currentAnswers()[stu.id]) return;
+      if(d.confident){
+        recordAnswer(stu.id, d.letter);
+        newly++;
+        if(navigator.vibrate) { try{ navigator.vibrate(25); }catch(e){} }
+      } else {
+        uncertain++;
+        addPending({key:"n"+d.number, number:d.number, letter:d.letter, studentId:stu.id});
+      }
+    } else if(d.letter){
+      uncertain++;
+      addPending({key:"u"+Math.round(d.bbox.x/20)+"-"+Math.round(d.bbox.y/20)+"-"+d.letter, number:null, letter:d.letter, studentId:null});
+    }
+  });
+  var got = session ? Object.keys(currentAnswers()).length : 0;
+  if(got >= students.length && students.length){
+    el("sweepStatus").textContent = "Đủ cả lớp rồi (" + got + "/" + students.length + "). Thầy bấm “Câu tiếp theo” để sang câu sau, hoặc dừng quét.";
+    el("scanResult").innerHTML = '<div class="okbox">Đã nhận đủ ' + got + '/' + students.length + ' thẻ cho câu này.</div>';
+  } else {
+    el("sweepStatus").textContent = "Vừa thấy " + dets.length + " thẻ trong khung · đã nhận " + got + "/" + students.length +
+      (newly ? " · vừa ghi thêm " + newly + " thẻ." : ".") +
+      (uncertain ? " Có " + uncertain + " thẻ chưa chắc — thầy xác nhận ở dưới." : " Giữ máy yên để nhận nốt các thẻ còn lại, hoặc lia sang hàng tiếp theo.");
+  }
+  renderPending();
+  renderSweepStatus();
 }
-el("snapBtn").addEventListener("click", function(){
+function addPending(p){
+  var ex = pendingDets.find(function(x){return x.key===p.key;});
+  if(ex){ ex.letter = p.letter; return; }
+  // Thẻ chưa rõ số: chỉ giữ tối đa vài thẻ chờ gán, tránh liệt kê trùng do rung tay.
+  if(p.number==null && pendingDets.filter(function(x){return x.number==null;}).length>=8) return;
+  pendingDets.push(p);
+}
+function renderPending(){
+  var box = el("sweepPending");
+  if(!pendingDets.length){ box.innerHTML = ""; return; }
+  var html = '<p style="font-weight:700;margin:14px 0 6px">Thẻ máy đọc chưa chắc — bấm đáp án đúng để ghi, không cần chụp lại:</p>';
+  html += pendingDets.map(function(p, i){
+    var label;
+    if(p.number!=null){
+      var stu = students.find(function(s){return s.card===p.number;});
+      label = "Thẻ " + p.number + " · " + (stu?esc(stu.name):"") + " — máy đọc: " + p.letter;
+    } else {
+      label = "Thẻ chưa rõ số — máy đọc: " + p.letter;
+    }
+    var inner = '<span style="font-weight:700">' + label + '</span> ';
+    if(p.number==null){
+      inner += '<select data-assign="' + i + '"><option value="">Gán cho học sinh…</option>' +
+        students.filter(function(s){return !currentAnswers()[s.id];}).map(function(s){
+          return '<option value="' + s.id + '"' + (p.studentId===s.id?" selected":"") + '>Thẻ ' + s.card + ' — ' + esc(s.name) + '</option>';
+        }).join("") + '</select>';
+    }
+    inner += LETTERS.map(function(L){
+      return '<button class="mini" type="button" data-pend="' + i + '" data-letter="' + L + '">' + L + '</button>';
+    }).join("");
+    inner += '<button class="mini" type="button" data-pend-del="' + i + '">Bỏ qua</button>';
+    return '<div class="detchip pending" style="border-radius:12px;display:block;margin-bottom:6px">' + inner + '</div>';
+  }).join("");
+  box.innerHTML = html;
+}
+el("sweepPending").addEventListener("click", function(e){
+  var del = e.target.closest("[data-pend-del]");
+  if(del){ pendingDets.splice(+del.getAttribute("data-pend-del"), 1); renderPending(); return; }
+  var b = e.target.closest("[data-pend]");
+  if(!b || !session) return;
+  var p = pendingDets[+b.getAttribute("data-pend")];
+  if(!p) return;
+  var sid = p.studentId;
+  if(p.number!=null){
+    var stu = students.find(function(s){return s.card===p.number;});
+    if(stu) sid = stu.id;
+  }
+  if(!sid){
+    el("sweepStatus").textContent = "Chọn học sinh để gán thẻ chưa rõ số trước, rồi mới bấm đáp án.";
+    return;
+  }
+  recordAnswer(sid, b.getAttribute("data-letter"));
+  pendingDets.splice(+b.getAttribute("data-pend"), 1);
+  renderPending(); renderSweepStatus();
+});
+el("sweepPending").addEventListener("change", function(e){
+  var sel = e.target.closest("[data-assign]");
+  if(!sel) return;
+  var p = pendingDets[+sel.getAttribute("data-assign")];
+  if(p) p.studentId = sel.value ? +sel.value : null;
+});
+function drawOverlay(dets, srcW, srcH){
+  var cv = el("camOverlay"), video = el("cam");
+  var w = video.clientWidth, h = video.clientHeight;
+  if(!w || !h) return;
+  if(cv.width!==w){ cv.width=w; cv.height=h; }
+  var ctx = cv.getContext("2d");
+  ctx.clearRect(0,0,w,h);
+  var scale = Math.max(w/srcW, h/srcH);
+  var dw = srcW*scale, dh = srcH*scale, ox = (w-dw)/2, oy = (h-dh)/2;
+  dets.forEach(function(d){
+    var x = ox + d.bbox.x*scale, y = oy + d.bbox.y*scale,
+        bw = d.bbox.w*scale, bh = d.bbox.h*scale;
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = d.confident ? "#22c55e" : "#f59e0b";
+    ctx.strokeRect(x, y, bw, bh);
+    var label = (d.number!=null ? ("#" + d.number + " ") : "#? ") + d.letter;
+    ctx.font = "bold 15px system-ui, sans-serif";
+    var tw = ctx.measureText(label).width + 12;
+    ctx.fillStyle = d.confident ? "#16a34a" : "#b45309";
+    ctx.fillRect(x, Math.max(0, y-22), tw, 22);
+    ctx.fillStyle = "#fff";
+    ctx.fillText(label, x+6, Math.max(15, y-6));
+  });
+}
+function clearOverlay(){
+  var cv = el("camOverlay");
+  if(cv){ var ctx = cv.getContext("2d"); ctx.clearRect(0,0,cv.width,cv.height); }
+  lastOverlay = [];
+}
+/* ---- Chụp 1 ảnh cả lớp (từ camera đang mở) + chụp bằng máy ảnh ---- */
+el("snapClassBtn").addEventListener("click", function(){
   var video = el("cam");
   if(!stream || !video.videoWidth || video.readyState<2){
     el("camMsg").textContent = "Camera chưa sẵn sàng. Thầy mở camera và đợi hình hiện lên rồi chụp lại.";
@@ -1421,9 +1543,11 @@ el("snapBtn").addEventListener("click", function(){
   }
   if(!ensureSession()) return;
   var canvas = captureVideoFrame(video);
-  var thumb = "";
-  try{ thumb = canvas.toDataURL("image/jpeg", 0.72); }catch(e){}
-  processCapturedImage(canvas, thumb);
+  var dets = [];
+  try{ dets = detectCardsInCanvas(canvas); }catch(err){ dets = []; }
+  showPhotoThumb(canvas, dets);
+  sweepQuestion = session.index; pendingDets = [];
+  processDetections(dets, canvas.width, canvas.height);
 });
 el("photoBtn").addEventListener("click", function(){ el("photoInput").click(); });
 el("photoInput").addEventListener("change", function(){
@@ -1441,41 +1565,37 @@ el("photoInput").addEventListener("change", function(){
     canvas.height = Math.round(img.naturalHeight*scale);
     var ctx = canvas.getContext("2d", {willReadFrequently:true});
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    var thumb = "";
-    try{ thumb = canvas.toDataURL("image/jpeg", 0.72); }catch(e){}
-    processCapturedImage(canvas, thumb);
+    var dets = [];
+    try{ dets = detectCardsInCanvas(canvas); }catch(err){ dets = []; }
+    showPhotoThumb(canvas, dets);
+    sweepQuestion = session.index; pendingDets = [];
+    processDetections(dets, canvas.width, canvas.height);
     URL.revokeObjectURL(url);
-    el("camMsg").textContent = "Đã nhận ảnh từ máy ảnh của điện thoại. Ảnh trên là ảnh vừa chụp — kiểm tra đáp án máy đọc rồi bấm xác nhận bên dưới.";
+    el("camMsg").textContent = "Đã nhận ảnh cả lớp từ máy ảnh của điện thoại. Thẻ đọc chắc đã tự ghi; thẻ chưa chắc hiện ở dưới để thầy xác nhận.";
   };
   img.onerror = function(){ URL.revokeObjectURL(url); el("scanResult").innerHTML = '<div class="errbox">Không đọc được ảnh vừa chụp. Thầy chụp lại.</div>'; };
   img.src = url;
 });
-function showScanConfirm(stu, letter){
-  var box = el("scanConfirm");
-  if(!stu){ box.style.display="none"; return; }
-  box.style.display = "block";
-  el("confirmName").textContent = "thẻ " + stu.card + " — " + stu.name;
-  box.querySelectorAll("[data-confirm]").forEach(function(b){
-    b.classList.toggle("on", letter && b.getAttribute("data-confirm")===letter);
+function showPhotoThumb(canvas, dets){
+  var thumb = el("photoThumb");
+  thumb.style.display = "block";
+  thumb.width = canvas.width; thumb.height = canvas.height;
+  var ctx = thumb.getContext("2d");
+  ctx.drawImage(canvas, 0, 0);
+  dets.forEach(function(d){
+    ctx.lineWidth = Math.max(3, Math.round(canvas.width/220));
+    ctx.strokeStyle = d.confident ? "#22c55e" : "#f59e0b";
+    ctx.strokeRect(d.bbox.x, d.bbox.y, d.bbox.w, d.bbox.h);
+    var label = (d.number!=null ? ("#" + d.number + " ") : "#? ") + d.letter;
+    ctx.font = "bold " + Math.max(16, Math.round(canvas.width/32)) + "px system-ui, sans-serif";
+    var tw = ctx.measureText(label).width + 12;
+    ctx.fillStyle = d.confident ? "#16a34a" : "#b45309";
+    ctx.fillRect(d.bbox.x, Math.max(0, d.bbox.y-26), tw, 26);
+    ctx.fillStyle = "#fff";
+    ctx.fillText(label, d.bbox.x+6, Math.max(18, d.bbox.y-6));
   });
 }
-el("scanConfirm").addEventListener("click", function(e){
-  var b = e.target.closest("[data-confirm]");
-  if(b){
-    if(!session) return;
-    var sid = +el("scanStudent").value;
-    recordAnswer(sid, b.getAttribute("data-letter"));
-    var stu = students.find(function(s){return s.id===sid;});
-    el("scanResult").innerHTML = '<div class="okbox">Đã ghi đáp án <b>'+b.getAttribute("data-letter")+'</b> cho thẻ '+stu.card+' — '+esc(stu.name)+'.</div>';
-    el("scanConfirm").style.display = "none";
-    renderScanSelect();
-    return;
-  }
-  if(e.target.id==="clearScanBtn"){
-    el("scanConfirm").style.display = "none";
-    el("scanResult").innerHTML = '<p class="hint">Đã bỏ qua thẻ này. Chọn học sinh khác hoặc chụp lại.</p>';
-  }
-});
+/* ================= Nhận nhiều thẻ: ngưỡng thích ứng + thành phần liên thông ================= */
 function otsuThreshold(lum, total){
   var hist = new Array(256).fill(0);
   for(var i=0;i<total;i++) hist[lum[i]]++;
@@ -1495,95 +1615,272 @@ function otsuThreshold(lum, total){
   }
   return Math.max(60, Math.min(180, thr));
 }
-function cornerScoresFromLum(lum, W, H, thr){
-  // Corner zones inset slightly so the card border (dark on all 4 sides)
-  // does not dominate; the large solid marker fills most of its zone.
+function lumOf(canvas, w, h){
+  var ctx = canvas.getContext("2d", {willReadFrequently:true});
+  var data = ctx.getImageData(0,0,w,h).data;
+  var lum = new Uint8Array(w*h);
+  for(var i=0;i<w*h;i++) lum[i] = Math.round(0.299*data[i*4]+0.587*data[i*4+1]+0.114*data[i*4+2]);
+  return lum;
+}
+function adaptiveDarkMask(lum, W, H){
+  // Integral image -> mean sáng của vùng lân cận từng điểm; điểm tối hơn
+  // hẳn vùng xung quanh mới tính là mực/viền đen. Chịu được nửa lớp sáng,
+  // nửa lớp tối và bóng đổ, thứ mà một ngưỡng toàn cục không làm được.
+  var intg = new Float64Array((W+1)*(H+1));
+  for(var y=0;y<H;y++){
+    var rowSum = 0;
+    for(var x=0;x<W;x++){
+      rowSum += lum[y*W+x];
+      intg[(y+1)*(W+1)+x+1] = intg[y*(W+1)+x+1] + rowSum;
+    }
+  }
+  var r = Math.max(5, Math.round(W/18));
+  var mask = new Uint8Array(W*H);
+  for(var yy=0;yy<H;yy++){
+    var y0 = Math.max(0, yy-r), y1 = Math.min(H-1, yy+r);
+    for(var xx=0;xx<W;xx++){
+      var x0 = Math.max(0, xx-r), x1 = Math.min(W-1, xx+r);
+      var area = (x1-x0+1)*(y1-y0+1);
+      var s = intg[(y1+1)*(W+1)+x1+1] - intg[y0*(W+1)+x1+1] - intg[(y1+1)*(W+1)+x0] + intg[y0*(W+1)+x0];
+      var mean = s/area, v = lum[yy*W+xx];
+      mask[yy*W+xx] = (v < mean-22 && v < 175) ? 1 : 0;
+    }
+  }
+  return mask;
+}
+function brightMask(lum, W, H){
+  // Vùng giấy trắng bên trong mỗi thẻ: sáng hơn hẳn vùng xung quanh.
+  // Dò vùng sáng tránh được "quầng tối" mà ngưỡng tối thích ứng tạo ra
+  // quanh thẻ trắng trên nền xám, thứ nối nhiều thẻ thành một vùng.
+  var intg = new Float64Array((W+1)*(H+1));
+  for(var y=0;y<H;y++){
+    var rowSum = 0;
+    for(var x=0;x<W;x++){
+      rowSum += lum[y*W+x];
+      intg[(y+1)*(W+1)+x+1] = intg[y*(W+1)+x+1] + rowSum;
+    }
+  }
+  var r = Math.max(5, Math.round(W/18));
+  var mask = new Uint8Array(W*H);
+  for(var yy=0;yy<H;yy++){
+    var y0 = Math.max(0, yy-r), y1 = Math.min(H-1, yy+r);
+    for(var xx=0;xx<W;xx++){
+      var x0 = Math.max(0, xx-r), x1 = Math.min(W-1, xx+r);
+      var area = (x1-x0+1)*(y1-y0+1);
+      var s = intg[(y1+1)*(W+1)+x1+1] - intg[y0*(W+1)+x1+1] - intg[(y1+1)*(W+1)+x0] + intg[y0*(W+1)+x0];
+      var mean = s/area, v = lum[yy*W+xx];
+      mask[yy*W+xx] = (v > mean+24 && v > 105) ? 1 : 0;
+    }
+  }
+  return mask;
+}
+function dilateMask(mask, W, H){
+  var out = new Uint8Array(W*H);
+  for(var y=0;y<H;y++) for(var x=0;x<W;x++){
+    if(!mask[y*W+x]) continue;
+    for(var dy=-1;dy<=1;dy++) for(var dx=-1;dx<=1;dx++){
+      var nx=x+dx, ny=y+dy;
+      if(nx>=0&&ny>=0&&nx<W&&ny<H) out[ny*W+nx]=1;
+    }
+  }
+  return out;
+}
+function labelComponents(mask, W, H){
+  var labels = new Int32Array(W*H).fill(-1);
+  var comps = [], id = 0, stack = [];
+  for(var i=0;i<W*H;i++){
+    if(!mask[i] || labels[i]>=0) continue;
+    var x0=W, y0=H, x1=0, y1=0, count=0;
+    stack.length = 0; stack.push(i); labels[i]=id;
+    while(stack.length){
+      var p = stack.pop(), x = p%W, y = (p/W)|0;
+      count++;
+      if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y;
+      if(x>0 && mask[p-1] && labels[p-1]<0){ labels[p-1]=id; stack.push(p-1); }
+      if(x<W-1 && mask[p+1] && labels[p+1]<0){ labels[p+1]=id; stack.push(p+1); }
+      if(y>0 && mask[p-W] && labels[p-W]<0){ labels[p-W]=id; stack.push(p-W); }
+      if(y<H-1 && mask[p+W] && labels[p+W]<0){ labels[p+W]=id; stack.push(p+W); }
+    }
+    comps.push({x0:x0, y0:y0, x1:x1, y1:y1, count:count});
+    id++;
+  }
+  return comps;
+}
+function cornerScoresFromCrop(cropCanvas){
+  var N = 120;
+  var c = document.createElement("canvas"); c.width=N; c.height=N;
+  var ctx = c.getContext("2d", {willReadFrequently:true});
+  ctx.drawImage(cropCanvas, 0, 0, N, N);
+  var lum = lumOf(c, N, N);
+  // Ngưỡng góc lấy theo Otsu nhưng chặn ở 125: nền xám của lớp (120–180)
+  // không được tính là tối, chỉ mực/viền đen thật mới tính.
+  var thr = Math.min(otsuThreshold(lum, lum.length), 125);
   function zone(x0f, y0f, x1f, y1f){
     var total=0, d=0;
-    var x0=Math.round(W*x0f), x1=Math.round(W*x1f), y0=Math.round(H*y0f), y1=Math.round(H*y1f);
-    for(var y=y0;y<y1;y++) for(var x=x0;x<x1;x++){ total++; if(lum[y*W+x]<=thr) d++; }
+    for(var y=Math.round(N*y0f);y<Math.round(N*y1f);y++) for(var x=Math.round(N*x0f);x<Math.round(N*x1f);x++){
+      total++; if(lum[y*N+x]<=thr) d++;
+    }
     return total? d/total : 0;
   }
+  // Vùng góc thu hẹp vào trong thẻ: ô định vị (24% cạnh) vẫn chiếm đa số,
+  // còn nền ngoài thẻ chỉ lọt một rìa nhỏ nên không át được ô định vị.
   return {
-    TR: zone(0.70, 0.02, 0.98, 0.30),
-    BR: zone(0.70, 0.70, 0.98, 0.98),
-    BL: zone(0.02, 0.70, 0.30, 0.98),
-    TL: zone(0.02, 0.02, 0.30, 0.30)
+    TR: zone(0.74, 0.04, 0.97, 0.27),
+    BR: zone(0.74, 0.73, 0.97, 0.96),
+    BL: zone(0.03, 0.73, 0.26, 0.96),
+    TL: zone(0.03, 0.04, 0.26, 0.27)
   };
 }
 function pickCorner(scores){
   var order = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
   var best = order[0], second = order[1];
-  window.__lastScores = scores;
-  // Relative test: the marker corner must stand out. The old 13% marker
-  // with a white hole only reaches ~0.2 in its zone, so the absolute
-  // bar is low on purpose; the gap to the runner-up is what decides.
-  if(scores[best] < 0.16) return null;
-  if((scores[best]-scores[second]) < 0.05) return null;
+  var margin = scores[best]-scores[second];
+  if(scores[best] < 0.22 || margin < 0.06) return null;
   var map = {TR:{letter:"A", name:"trên–phải"}, BR:{letter:"B", name:"dưới–phải"}, BL:{letter:"C", name:"dưới–trái"}, TL:{letter:"D", name:"trên–trái"}};
-  return {letter: map[best].letter, cornerName: map[best].name, confident: (scores[best]-scores[second])>0.15 && scores[best]>0.28, scores: scores};
+  return {corner:best, letter:map[best].letter, cornerName:map[best].name,
+          // Ngưỡng "chắc" để ở 0.12: với thẻ mới, dãy mã số chỉ đọc đúng
+          // khi góc đã đúng nên bản thân mã số là một kiểm chứng độc lập;
+          // thẻ cũ không có mã vẫn phải qua ngưỡng 0.24 ở nơi gọi.
+          confident: margin>0.12 && scores[best]>0.30, margin:margin, scores:scores};
 }
-function detectOrientation(sourceCanvas){
-  // 1) Centre-square crop = the square guide on screen. The card is
-  // supposed to fill this square, so its corners land in the corner
-  // zones regardless of what is behind the card.
-  var W = sourceCanvas.width, H = sourceCanvas.height;
-  var side = Math.round(Math.min(W, H) * 0.92);
-  // For the 640x480 video canvas the guide is 68% of the width:
-  if(W===640 && H===480) side = Math.round(W*0.68);
-  var sx = Math.round((W-side)/2), sy = Math.round((H-side)/2);
-  var small = document.createElement("canvas");
-  small.width = 160; small.height = 160;
-  var sctx = small.getContext("2d", {willReadFrequently:true});
-  sctx.drawImage(sourceCanvas, sx, sy, side, side, 0, 0, 160, 160);
-  var data;
-  try{ data = sctx.getImageData(0,0,160,160).data; }catch(err){ return null; }
-  var lum = new Uint8Array(160*160);
-  for(var i=0;i<160*160;i++) lum[i] = Math.round(0.299*data[i*4]+0.587*data[i*4+1]+0.114*data[i*4+2]);
-  var thr = otsuThreshold(lum, lum.length);
-  var scores = cornerScoresFromLum(lum, 160, 160, thr);
-  var det = pickCorner(scores);
-  if(det){ det.threshold = thr; return det; }
-  // 2) Fallback: whole frame, card bounding box from dark pixels.
-  // Helps when the card is smaller than the guide (held too far away).
-  var full = document.createElement("canvas");
-  full.width = 160; full.height = 120;
-  var fctx = full.getContext("2d", {willReadFrequently:true});
-  fctx.drawImage(sourceCanvas, 0, 0, 160, 120);
-  var fdata;
-  try{ fdata = fctx.getImageData(0,0,160,120).data; }catch(err2){ return null; }
-  var flum = new Uint8Array(160*120);
-  for(var j=0;j<160*120;j++) flum[j] = Math.round(0.299*fdata[j*4]+0.587*fdata[j*4+1]+0.114*fdata[j*4+2]);
-  var fthr = otsuThreshold(flum, flum.length);
-  var dark = [];
-  for(var y=0;y<120;y++) for(var x=0;x<160;x++) if(flum[y*160+x]<=fthr) dark.push([x,y]);
-  if(dark.length<200) return null;
-  dark.sort(function(a,b){return a[0]-b[0]});
-  var x0 = dark[Math.floor(dark.length*0.03)][0], x1 = dark[Math.floor(dark.length*0.97)][0];
-  dark.sort(function(a,b){return a[1]-b[1]});
-  var y0 = dark[Math.floor(dark.length*0.03)][1], y1 = dark[Math.floor(dark.length*0.97)][1];
-  var w = Math.max(1, x1-x0), h = Math.max(1, y1-y0);
-  if(w<50 || h<40) return null;
-  function cornerRatio(cx0, cy0){
-    var total=0, d=0;
-    var rx0 = Math.round(x0 + w*cx0), rx1 = Math.round(x0 + w*(cx0+0.22));
-    var ry0 = Math.round(y0 + h*cy0), ry1 = Math.round(y0 + h*(cy0+0.22));
-    for(var yy=ry0; yy<=ry1; yy++) for(var xx=rx0; xx<=rx1; xx++){
-      if(xx<0||yy<0||xx>=160||yy>=120) continue;
-      total++; if(flum[yy*160+xx]<=fthr) d++;
-    }
-    return total? d/total : 0;
+function rotateToUpright(crop, corner){
+  var w = crop.width, h = crop.height, size = Math.max(w,h);
+  var out = document.createElement("canvas"); out.width=size; out.height=size;
+  var ctx = out.getContext("2d", {willReadFrequently:true});
+  ctx.fillStyle = "#fff"; ctx.fillRect(0,0,size,size);
+  var angle = corner==="TR" ? 0 : corner==="BR" ? -Math.PI/2 : corner==="BL" ? Math.PI : Math.PI/2;
+  ctx.save();
+  ctx.translate(size/2, size/2); ctx.rotate(angle);
+  ctx.drawImage(crop, -w/2, -h/2);
+  ctx.restore();
+  return out;
+}
+function readCodeStrip(upright){
+  // Dãy mã nằm ngang, gần cạnh dưới, sau khi thẻ đã xoay về đúng chiều:
+  // y ~ 0.78–0.85, x từ 0.22 đến 0.78, 7 ô (6 bit số thẻ + 1 bit chẵn lẻ).
+  // Hộp bao từ vùng giấy trắng không trùng khít mép thẻ thật, nên trước
+  // hết tìm mép viền đen của thẻ trong ảnh đã xoay (hàng/cột tối), rồi
+  // đọc mã theo tọa độ tương đối của chính thẻ, dò thêm vài % quanh đó.
+  var N = 160;
+  var c = document.createElement("canvas"); c.width=N; c.height=N;
+  var ctx = c.getContext("2d", {willReadFrequently:true});
+  ctx.drawImage(upright, 0, 0, N, N);
+  var lum = lumOf(c, N, N);
+  function findBounds(){
+    var thr = 110;
+    function rowFrac(y){ var d=0; for(var x=0;x<N;x++) if(lum[y*N+x]<thr) d++; return d/N; }
+    function colFrac(x){ var d=0; for(var y=0;y<N;y++) if(lum[y*N+x]<thr) d++; return d/N; }
+    var y0=-1, y1=-1, x0=-1, x1=-1;
+    for(var y=0;y<N;y++){ if(rowFrac(y)>0.35){ if(y0<0) y0=y; y1=y; } }
+    for(var x=0;x<N;x++){ if(colFrac(x)>0.35){ if(x0<0) x0=x; x1=x; } }
+    if(y0<0 || x0<0 || (y1-y0)<N*0.5 || (x1-x0)<N*0.5) return null;
+    return {x0:x0, x1:x1, y0:y0, y1:y1};
   }
-  var fscores = {
-    TR: cornerRatio(0.76, 0.04),
-    BR: cornerRatio(0.76, 0.74),
-    BL: cornerRatio(0.02, 0.74),
-    TL: cornerRatio(0.02, 0.04)
-  };
-  var det2 = pickCorner(fscores);
-  if(det2){ det2.threshold = fthr; return det2; }
-  window.__lastScores = scores;
-  return null;
+  var bounds = findBounds();
+  function readAt(relCy, relX0, relW){
+    var means = [];
+    for(var i=0;i<7;i++){
+      var rx = relX0 + i*(relW/7) + (relW/7)/2;
+      var px, py;
+      if(bounds){ px = bounds.x0 + rx*(bounds.x1-bounds.x0); py = bounds.y0 + relCy*(bounds.y1-bounds.y0); }
+      else { px = rx*N; py = relCy*N; }
+      var hw = Math.max(2, Math.round(N*0.02)), hh = Math.max(2, Math.round(N*0.014)), sum=0, cnt=0;
+      for(var y=Math.round(py)-hh;y<=Math.round(py)+hh;y++) for(var x=Math.round(px)-hw;x<=Math.round(px)+hw;x++){
+        if(x>=0&&y>=0&&x<N&&y<N){ sum+=lum[y*N+x]; cnt++; }
+      }
+      means.push(cnt? sum/cnt : 255);
+    }
+    var mn = Math.min.apply(null, means), mx = Math.max.apply(null, means);
+    var thr2 = (mn+mx)/2;
+    var bits = means.map(function(m){ return m<thr2 ? 1 : 0; });
+    var contrast = Math.min.apply(null, means.map(function(m){ return Math.abs(m-thr2); }));
+    var num = 0;
+    for(var k=0;k<6;k++) num = num*2 + bits[k];
+    var parityOk = ((bits[0]+bits[1]+bits[2]+bits[3]+bits[4]+bits[5]+bits[6])%2)===0;
+    return {bits:bits, contrast:contrast, range:mx-mn, num:num, parityOk:parityOk};
+  }
+  var best = null;
+  var cyList = bounds ? [0.795, 0.815, 0.835, 0.775, 0.855] : [];
+  if(!bounds){ for(var cy=0.70; cy<=0.90; cy+=0.015) cyList.push(cy); }
+  cyList.forEach(function(cy){
+    for(var dx=-0.02; dx<=0.021; dx+=0.02){
+      var r = readAt(cy, 0.22+dx, 0.56);
+      if(r.range<28) return;
+      var score = r.contrast + (r.parityOk && r.num>=1 && r.num<=127 ? 60 : 0);
+      if(!best || score>best.score) best = {score:score, r:r};
+    }
+  });
+  if(!best) return {number:null, bits:null, contrast:0};
+  if(!best.r.parityOk || best.r.num<1 || best.r.num>127) return {number:null, bits:best.r.bits, contrast:best.r.contrast, parityOk:false};
+  return {number:best.r.num, bits:best.r.bits, contrast:best.r.contrast, parityOk:true};
+}
+function detectCardsInCanvas(sourceCanvas){
+  var SW = 240, SH = Math.max(120, Math.round(240*sourceCanvas.height/sourceCanvas.width));
+  var small = document.createElement("canvas"); small.width=SW; small.height=SH;
+  var sctx = small.getContext("2d", {willReadFrequently:true});
+  sctx.drawImage(sourceCanvas, 0, 0, SW, SH);
+  var lum = lumOf(small, SW, SH);
+  // Đường chính: vùng giấy trắng bên trong thẻ. Dự phòng: vòng viền đen,
+  // nhưng với ngưỡng tuyệt đối chặt hơn để quầng tối quanh thẻ không nối
+  // các thẻ lại với nhau.
+  var brightComps = labelComponents(brightMask(lum, SW, SH), SW, SH).filter(function(cp){
+    var bw = cp.x1-cp.x0+1, bh = cp.y1-cp.y0+1;
+    if(bw<20 || bh<18) return false;
+    var aspect = bw/bh;
+    if(aspect<0.55 || aspect>1.8) return false;
+    return cp.count/(bw*bh) > 0.5;
+  });
+  var useBright = brightComps.length>0;
+  var mask = useBright ? null : dilateMask(adaptiveDarkMask(lum, SW, SH), SW, SH);
+  var comps = useBright ? brightComps : labelComponents(mask, SW, SH);
+  var sx = sourceCanvas.width/SW, sy = sourceCanvas.height/SH;
+  var dets = [];
+  comps.forEach(function(cp){
+    var bw = cp.x1-cp.x0+1, bh = cp.y1-cp.y0+1;
+    if(useBright){
+      if(bw<20 || bh<18) return;
+    } else {
+      if(bw<26 || bh<24 || bw>SW*0.92 || bh>SH*0.92) return;
+      var aspect2 = bw/bh;
+      if(aspect2<0.55 || aspect2>1.8) return;
+      var fill = cp.count/(bw*bh);
+      if(fill<0.10 || fill>0.72) return;
+    }
+    var pad = useBright ? Math.round(Math.max(bw,bh)*0.10)+2 : 3;
+    var x0 = Math.max(0, Math.round((cp.x0-pad)*sx)), y0 = Math.max(0, Math.round((cp.y0-pad)*sy));
+    var x1 = Math.min(sourceCanvas.width, Math.round((cp.x1+pad)*sx)), y1 = Math.min(sourceCanvas.height, Math.round((cp.y1+pad)*sy));
+    var cw = x1-x0, ch = y1-y0;
+    if(cw<40 || ch<36) return;
+    var crop = document.createElement("canvas"); crop.width=cw; crop.height=ch;
+    var cctx = crop.getContext("2d", {willReadFrequently:true});
+    cctx.drawImage(sourceCanvas, x0, y0, cw, ch, 0, 0, cw, ch);
+    var scores = cornerScoresFromCrop(crop);
+    var pick = pickCorner(scores);
+    if(!pick) return;
+    var code = {number:null};
+    try{ code = readCodeStrip(rotateToUpright(crop, pick.corner)); }catch(e){ code = {number:null}; }
+    var confident = pick.confident && (code.number!=null ? (code.contrast>18) : pick.margin>0.24);
+    dets.push({
+      bbox:{x:x0, y:y0, w:cw, h:ch},
+      letter:pick.letter, corner:pick.corner, cornerName:pick.cornerName,
+      margin:pick.margin, scores:scores,
+      number:code.number, codeBits:code.bits||null,
+      confident:!!confident
+    });
+  });
+  // Loại trùng: hai hộp chồng nhau nhiều thì giữ hộp lớn hơn.
+  dets.sort(function(a,b){ return (b.bbox.w*b.bbox.h)-(a.bbox.w*a.bbox.h); });
+  var kept = [];
+  dets.forEach(function(d){
+    var dup = kept.some(function(k){
+      var ix = Math.max(0, Math.min(d.bbox.x+d.bbox.w, k.bbox.x+k.bbox.w)-Math.max(d.bbox.x, k.bbox.x));
+      var iy = Math.max(0, Math.min(d.bbox.y+d.bbox.h, k.bbox.y+k.bbox.h)-Math.max(d.bbox.y, k.bbox.y));
+      var inter = ix*iy, union = d.bbox.w*d.bbox.h + k.bbox.w*k.bbox.h - inter;
+      return union>0 && inter/union>0.45;
+    });
+    if(!dup) kept.push(d);
+  });
+  return kept;
 }
 
 /* ================= Results ================= */
