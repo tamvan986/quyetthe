@@ -99,8 +99,7 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute
 .paper-card .edge.c{bottom:4%;left:50%;transform:translateX(-50%);font-size:clamp(22px,4.5vw,34px)}
 .paper-card .edge.d{top:50%;left:4%;transform:translateY(-50%);font-size:clamp(22px,4.5vw,34px)}
 .paper-card .edge small{display:block;font-size:9px;letter-spacing:.08em;font-weight:700;color:#555}
-.paper-card .orient{position:absolute;top:6%;right:6%;width:13%;aspect-ratio:1;background:#111;border-radius:3px}
-.paper-card .orient::after{content:"";position:absolute;inset:28%;background:#fff;border-radius:50%}
+.paper-card .orient{position:absolute;top:4%;right:4%;width:20%;aspect-ratio:1;background:#111;border-radius:3px}
 .paper-card .num{font-size:clamp(44px,9vw,76px);font-weight:900;line-height:1;margin-top:16%}
 .paper-card .sname{font-size:clamp(12px,2.4vw,17px);font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .paper-card .foot{position:absolute;bottom:9%;left:0;right:0;font-size:9.5px;color:#666;letter-spacing:.05em}
@@ -131,8 +130,16 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute
 .scanrow .picked{font-weight:800;font-size:13px;min-width:86px}
 video#cam{width:100%;border-radius:14px;background:#000;aspect-ratio:4/3;object-fit:cover;display:block}
 .camframe{position:relative}
-.camframe .guide{position:absolute;inset:12% 8%;border:3px dashed #fff;border-radius:14px;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.28)}
+.camframe .guide{position:absolute;left:50%;top:50%;width:68%;aspect-ratio:1;transform:translate(-50%,-50%);border:3px dashed #fff;border-radius:14px;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.28)}
 .camframe .guide span{position:absolute;left:50%;top:-26px;transform:translateX(-50%);background:#111;color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.camframe .guide i{position:absolute;width:22px;height:22px;border:4px solid #f59e0b}
+.camframe .guide i.tl{left:-4px;top:-4px;border-right:none;border-bottom:none;border-radius:8px 0 0 0}
+.camframe .guide i.tr{right:-4px;top:-4px;border-left:none;border-bottom:none;border-radius:0 8px 0 0}
+.camframe .guide i.bl{left:-4px;bottom:-4px;border-right:none;border-top:none;border-radius:0 0 0 8px}
+.camframe .guide i.br{right:-4px;bottom:-4px;border-left:none;border-top:none;border-radius:0 0 8px 0}
+.cornerbar{display:grid;grid-template-columns:86px 1fr 44px;gap:8px;align-items:center;font-size:12.5px;margin-top:5px}
+.cornerbar .bar{height:10px}
+.cornerbar b{text-align:right}
 canvas#shot{display:none}
 .rankrow{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line)}
 .rankpos{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:var(--surface2);border:1.5px solid var(--line);flex:0 0 auto}
@@ -260,7 +267,7 @@ canvas#shot{display:none}
       <ul style="font-size:14.5px;margin:10px 0 0;padding-left:20px">
         <li><b>Xoay chữ đáp án lên trên.</b> Muốn chọn A thì xoay cho chữ A ở cạnh trên cùng; chọn B thì chữ B lên trên, tương tự C, D.</li>
         <li>Giơ thẻ thẳng, mặt số hướng về phía thầy, giữ yên đến khi thầy nói “đã nhận”.</li>
-        <li>Ô vuông đen ở góc là ô định vị để máy quét nhận hướng thẻ — đừng che, đừng vẽ thêm vào đó.</li>
+        <li>Ô vuông đen to ở góc là ô định vị để máy quét nhận hướng thẻ — đừng che, đừng vẽ thêm vào đó. Thầy in lại bộ thẻ từ bản app này: thẻ in từ bản cũ có ô đen nhỏ hơn nên máy khó nhận, cần in lại để quét nhạy.</li>
       </ul>
       <div class="cards-toolbar" style="margin-top:14px">
         <div>
@@ -270,10 +277,9 @@ canvas#shot{display:none}
             <option value="compact">Vừa — 6 thẻ / trang A4</option>
           </select>
         </div>
-        <button class="btn" id="printBtn" type="button">In / lưu PDF bộ thẻ</button>
         <button class="btn secondary" id="previewPrintBtn" type="button">Xem riêng trang in</button>
       </div>
-      <p class="hint">Trang in chỉ còn bộ thẻ. Trên điện thoại, dùng “Chia sẻ → In” của trình duyệt nếu nút in không mở được hộp thoại.</p>
+      <p class="hint">Bấm “Xem riêng trang in” để chỉ còn bộ thẻ, rồi dùng lệnh In / “Chia sẻ → In” của trình duyệt để in hoặc lưu PDF.</p>
     </div>
     <div id="cardsArea">
       <div class="cards-grid" id="cardsGrid"></div>
@@ -335,16 +341,22 @@ canvas#shot{display:none}
     <div class="grid2">
       <div class="card">
         <h3>Quét từng thẻ bằng camera</h3>
-        <p class="lead">Chọn học sinh, đưa thẻ của em vào khung, bấm “Chụp &amp; nhận hướng”. Máy đọc ô định vị đen ở góc thẻ để biết chữ nào đang ở trên. Nếu máy đọc sai, thầy sửa bằng một lần bấm ở dưới — đáp án cuối cùng luôn do thầy chốt.</p>
+        <p class="lead">Chọn học sinh, đưa thẻ của em vào khung vuông sao cho thẻ vừa khít khung và ô đen ở góc lọt hẳn trong khung, giữ thẳng rồi bấm “Chụp &amp; nhận hướng”. Máy đọc ô đen ở góc thẻ để biết chữ nào đang ở trên. Có 3 cách quét: chụp thủ công, quét tự động (máy tự nhận khi thẻ vào khung), hoặc chụp bằng máy ảnh của điện thoại nếu camera trong trang không mở được. Nếu máy đọc sai, thầy sửa bằng một lần bấm ở dưới — đáp án cuối cùng luôn do thầy chốt.</p>
         <label for="scanStudent" style="margin-top:12px">Học sinh đang quét</label>
         <select id="scanStudent"></select>
         <div class="btnrow">
           <button class="btn" id="camOnBtn" type="button">Mở camera sau</button>
           <button class="btn secondary" id="camOffBtn" type="button" disabled>Tắt camera</button>
+          <button class="btn gold" id="autoScanBtn" type="button" disabled>Quét tự động: Tắt</button>
         </div>
+        <div class="btnrow">
+          <button class="btn secondary" id="photoBtn" type="button">Chụp bằng máy ảnh của điện thoại</button>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" capture="environment" hidden />
+        <p class="hint" id="autoScanStatus"></p>
         <div class="camframe" style="margin-top:12px">
           <video id="cam" playsinline muted autoplay></video>
-          <div class="guide"><span>Đặt 1 thẻ vào khung, giữ thẳng</span></div>
+          <div class="guide"><span>Đặt 1 thẻ vừa khung vuông, giữ thẳng</span><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
         </div>
         <p class="hint" id="camMsg">Camera chưa mở. Trên điện thoại, trình duyệt sẽ hỏi quyền dùng camera — thầy bấm Cho phép.</p>
         <div class="btnrow">
@@ -400,7 +412,7 @@ canvas#shot{display:none}
   <section class="panel" id="print-area" aria-hidden="true">
     <div class="no-print" style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <button class="btn secondary" id="backFromPrintBtn" type="button">← Quay lại xem thẻ</button>
-      <span class="hint">Đây là trang in — chỉ còn bộ thẻ. Bấm “In / lưu PDF” ở phần In thẻ giấy để in.</span>
+      <span class="hint">Đây là trang in — chỉ còn bộ thẻ. Dùng lệnh In / “Chia sẻ → In” của trình duyệt để in hoặc lưu PDF trang này.</span>
     </div>
     <div class="cards-grid" id="printGrid"></div>
   </section>
@@ -705,17 +717,6 @@ function renderCards(){
 el("cardSize").addEventListener("change", renderCards);
 el("backFromPrintBtn").addEventListener("click", function(){
   document.querySelector('[data-tab="cards"]').click();
-});
-el("printBtn").addEventListener("click", function(){
-  if(!students.length){
-    el("cardsEmpty").textContent = "Chưa có học sinh nên chưa có thẻ nào để in. Thêm học sinh ở phần “Lớp học” trước.";
-    el("cardsEmpty").style.display = "block";
-    return;
-  }
-  document.querySelectorAll("section.panel").forEach(function(p){ p.classList.remove("active"); });
-  el("print-area").classList.add("active");
-  window.scrollTo(0,0);
-  window.print();
 });
 el("previewPrintBtn").addEventListener("click", function(){
   if(!students.length){
@@ -1270,62 +1271,184 @@ function renderScanSelect(){
 }
 
 /* ================= Camera + orientation detection ================= */
+var autoScanOn = false, autoScanTimer = null, autoScanBusy = false, lastAutoRecord = 0;
+function ensureSession(){
+  if(session) return true;
+  if(!students.length || !questions.length){
+    el("scanResult").innerHTML = '<div class="warnbox">Chưa bắt đầu được buổi chấm: cần ít nhất 1 học sinh (phần “Lớp học”) và 1 câu hỏi (phần “Bộ câu hỏi”).</div>';
+    return false;
+  }
+  var start = Math.min(+el("startAt").value||0, questions.length-1);
+  var total = +el("timePerQ").value||30;
+  session = {index:start, answers:{}, attempted:{}, revealed:false, timeLeft:total, totalTime:total, running:false, timerId:null};
+  session.attempted[start]=true;
+  el("sessionHint").textContent = "Đang chấm từ câu " + (start+1) + " (tự bắt đầu khi thầy quét thẻ đầu tiên). Học sinh giơ thẻ — thầy quét hoặc bấm bảng chấm nhanh.";
+  renderLive(); startTimer(); renderScanSelect();
+  return true;
+}
+function stopAutoScan(silent){
+  autoScanOn = false;
+  if(autoScanTimer){ clearInterval(autoScanTimer); autoScanTimer=null; }
+  el("autoScanBtn").textContent = "Quét tự động: Tắt";
+  if(!silent) el("autoScanStatus").textContent = "";
+}
 function stopCamera(){
+  stopAutoScan(true);
   if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream=null; }
   el("cam").srcObject = null;
   el("snapBtn").disabled = true;
   el("camOffBtn").disabled = true;
+  el("autoScanBtn").disabled = true;
   el("camOnBtn").disabled = false;
+  el("autoScanStatus").textContent = "";
 }
 el("camOnBtn").addEventListener("click", function(){
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    el("camMsg").textContent = "Trình duyệt này không mở được camera. Thầy dùng bảng “Chấm nhanh cả lớp” bên cạnh — vẫn chấm đủ cả lớp.";
+    el("camMsg").textContent = "Trình duyệt này không mở được camera trong trang. Thầy bấm “Chụp bằng máy ảnh của điện thoại” ở trên — cách đó dùng máy ảnh của máy nên vẫn quét được.";
     return;
   }
   el("camMsg").textContent = "Đang xin quyền camera…";
-  navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}, audio:false}).then(function(s){
-    stream = s;
-    el("cam").srcObject = s;
-    el("camMsg").textContent = "Camera đã mở. Đưa một thẻ vào khung, giữ thẳng rồi bấm “Chụp & nhận hướng thẻ”.";
-    el("snapBtn").disabled = false;
-    el("camOffBtn").disabled = false;
-    el("camOnBtn").disabled = true;
-  }).catch(function(){
-    el("camMsg").textContent = "Không mở được camera (chưa cấp quyền hoặc thiết bị bận). Thầy bấm Cho phép khi trình duyệt hỏi, hoặc dùng bảng “Chấm nhanh cả lớp”.";
-  });
+  var tries = [
+    {video:{facingMode:{ideal:"environment"}, width:{ideal:1280}, height:{ideal:720}}, audio:false},
+    {video:{facingMode:"environment"}, audio:false},
+    {video:true, audio:false}
+  ];
+  var attempt = 0;
+  function tryNext(){
+    if(attempt>=tries.length){
+      el("camMsg").textContent = "Không mở được camera. Thầy kiểm tra: đã bấm Cho phép khi trình duyệt hỏi chưa, camera có đang bị app khác giữ không, và thử mở lại bằng Chrome (Android) hoặc Safari (iPhone). Cách chắc chắn nhất: bấm “Chụp bằng máy ảnh của điện thoại” ở trên.";
+      return;
+    }
+    navigator.mediaDevices.getUserMedia(tries[attempt++]).then(function(s){
+      stream = s;
+      var video = el("cam");
+      video.srcObject = s;
+      var played = video.play ? video.play() : null;
+      if(played && played.catch) played.catch(function(){});
+      el("camMsg").textContent = "Camera đã mở. Đưa một thẻ vào khung vuông cho vừa khít, giữ thẳng rồi bấm “Chụp & nhận hướng thẻ”, hoặc bật “Quét tự động” để máy tự nhận.";
+      el("snapBtn").disabled = false;
+      el("camOffBtn").disabled = false;
+      el("autoScanBtn").disabled = false;
+      el("camOnBtn").disabled = true;
+    }).catch(function(err){
+      if(err && err.name==="NotAllowedError"){
+        el("camMsg").textContent = "Trình duyệt đã chặn quyền camera. Thầy bấm biểu tượng ổ khóa/camera trên thanh địa chỉ, bật lại quyền Camera cho trang này rồi bấm “Mở camera sau” lại — hoặc dùng nút “Chụp bằng máy ảnh của điện thoại”.";
+      } else if(attempt<tries.length){ tryNext(); }
+      else {
+        el("camMsg").textContent = "Không mở được camera ("+(err&&err.name?err.name:"lỗi không rõ")+"). Thầy dùng nút “Chụp bằng máy ảnh của điện thoại” ở trên, hoặc bảng “Chấm nhanh cả lớp” bên cạnh.";
+      }
+    });
+  }
+  tryNext();
 });
 el("camOffBtn").addEventListener("click", function(){ stopCamera(); el("camMsg").textContent = "Camera đã tắt."; });
-el("snapBtn").addEventListener("click", function(){
+el("autoScanBtn").addEventListener("click", function(){
+  if(!stream){ el("autoScanStatus").textContent = "Mở camera trước đã."; return; }
+  if(autoScanOn){ stopAutoScan(); el("autoScanStatus").textContent = "Đã tắt quét tự động."; return; }
+  if(!ensureSession()) return;
+  autoScanOn = true;
+  el("autoScanBtn").textContent = "Quét tự động: Bật";
+  el("autoScanStatus").textContent = "Đang quét tự động: đưa từng thẻ vào khung, máy tự ghi khi nhận chắc chắn rồi chuyển sang học sinh tiếp theo. Thầy vẫn sửa tay được ở bảng chấm nhanh.";
+  autoScanTimer = setInterval(autoScanTick, 750);
+});
+function autoScanTick(){
+  if(!autoScanOn || !stream || autoScanBusy) return;
+  if(!session) return;
+  if(Date.now()-lastAutoRecord < 1200) return;
   var video = el("cam");
-  if(!stream || !video.videoWidth){
-    el("camMsg").textContent = "Camera chưa sẵn sàng. Thầy mở camera và đợi hình hiện lên rồi chụp lại.";
-    return;
-  }
-  if(!session){
-    el("scanResult").innerHTML = '<div class="warnbox">Chưa bắt đầu buổi chấm nên chưa ghi được đáp án. Bấm “Bắt đầu buổi chấm” ở trên trước.</div>';
-    return;
-  }
+  if(!video.videoWidth || video.readyState<2) return;
+  autoScanBusy = true;
+  try{
+    var canvas = captureVideoFrame(video);
+    var det = detectOrientation(canvas);
+    if(det && det.confident){
+      var sid = +el("scanStudent").value;
+      var stu = students.find(function(s){return s.id===sid;});
+      if(stu && !currentAnswers()[sid]){
+        recordAnswer(sid, det.letter);
+        lastAutoRecord = Date.now();
+        el("scanResult").innerHTML = '<div class="okbox">Quét tự động đã ghi đáp án <b>'+det.letter+'</b> cho thẻ '+stu.card+' — '+esc(stu.name)+'.</div>' + cornerDebugHtml(det);
+        el("scanConfirm").style.display = "none";
+        renderScanSelect();
+        el("autoScanStatus").textContent = "Đã ghi thẻ "+stu.card+". Đưa thẻ tiếp theo vào khung…";
+      }
+    } else if(det){
+      el("autoScanStatus").textContent = "Thấy thẻ nhưng chưa chắc hướng (góc tối nhất: "+det.cornerName+"). Giữ thẻ thẳng, đưa lại gần hơn.";
+    }
+  }catch(err){ /* keep scanning */ }
+  autoScanBusy = false;
+}
+function captureVideoFrame(video){
   var canvas = el("shot");
   var ctx = canvas.getContext("2d", {willReadFrequently:true});
-  // Cover-crop video frame into the canvas.
   var vw = video.videoWidth, vh = video.videoHeight, cw = canvas.width, ch = canvas.height;
   var scale = Math.max(cw/vw, ch/vh);
   var dw = vw*scale, dh = vh*scale;
   ctx.drawImage(video, (cw-dw)/2, (ch-dh)/2, dw, dh);
+  return canvas;
+}
+function cornerDebugHtml(det){
+  if(!det || !det.scores) return "";
+  var names = {TR:"Trên–phải (A)", BR:"Dưới–phải (B)", BL:"Dưới–trái (C)", TL:"Trên–trái (D)"};
+  var rows = Object.keys(names).map(function(k){
+    var pct = Math.round((det.scores[k]||0)*100);
+    return '<div class="cornerbar"><span>Góc '+names[k]+'</span><span class="bar"><i style="width:'+pct+'%"></i></span><b>'+pct+'%</b></div>';
+  }).join("");
+  return '<div style="margin-top:10px"><p style="font-weight:700;margin:0 0 4px;font-size:13px">Độ tối 4 góc — góc có ô đen phải tối hơn hẳn các góc còn lại:</p>' + rows + '</div>';
+}
+function processCapturedImage(canvas, thumb){
   var det = detectOrientation(canvas);
   var sid = +el("scanStudent").value;
   var stu = students.find(function(s){return s.id===sid;});
-  var thumb = canvas.toDataURL("image/jpeg", 0.72);
-  var html = '<img src="'+thumb+'" alt="Ảnh thẻ vừa chụp" style="width:100%;border-radius:12px;border:1px solid var(--line)">';
+  var html = "";
+  if(thumb) html += '<img src="'+thumb+'" alt="Ảnh thẻ vừa chụp" style="width:100%;border-radius:12px;border:1px solid var(--line)">';
   if(det){
     html += '<p style="margin:10px 0 0;font-size:14.5px">Máy đọc được: ô định vị ở góc <b>'+det.cornerName+'</b> → chữ <b>'+det.letter+'</b> đang ở trên.' +
-      (det.confident ? ' <span class="pill green">Khá chắc</span>' : ' <span class="pill grey">Chưa chắc — thầy kiểm tra lại</span>') + '</p>';
+      (det.confident ? ' <span class="pill green">Khá chắc</span>' : ' <span class="pill grey">Chưa chắc — thầy kiểm tra lại</span>') + '</p>' + cornerDebugHtml(det);
     showScanConfirm(stu, det.letter);
   } else {
-    html += '<p style="margin:10px 0 0;font-size:14.5px">Máy chưa đọc rõ hướng thẻ trong ảnh này (thẻ chưa đủ to trong khung, bị nghiêng, hoặc thiếu sáng). Thầy đưa thẻ lại gần hơn, giữ thẳng, chụp lại — hoặc chọn đáp án đúng bằng tay ngay bên dưới.</p>';
+    html += '<p style="margin:10px 0 0;font-size:14.5px">Máy chưa đọc rõ hướng thẻ trong ảnh này. Thầy đưa thẻ lại gần hơn cho vừa khít khung vuông, giữ thẳng, đủ sáng, không che ô đen ở góc, rồi chụp lại — hoặc chọn đáp án đúng bằng tay ngay bên dưới.</p>';
+    if(det===null && window.__lastScores) html += cornerDebugHtml({scores: window.__lastScores});
     showScanConfirm(stu, null);
   }
   el("scanResult").innerHTML = html;
+}
+el("snapBtn").addEventListener("click", function(){
+  var video = el("cam");
+  if(!stream || !video.videoWidth || video.readyState<2){
+    el("camMsg").textContent = "Camera chưa sẵn sàng. Thầy mở camera và đợi hình hiện lên rồi chụp lại.";
+    return;
+  }
+  if(!ensureSession()) return;
+  var canvas = captureVideoFrame(video);
+  var thumb = "";
+  try{ thumb = canvas.toDataURL("image/jpeg", 0.72); }catch(e){}
+  processCapturedImage(canvas, thumb);
+});
+el("photoBtn").addEventListener("click", function(){ el("photoInput").click(); });
+el("photoInput").addEventListener("change", function(){
+  var f = el("photoInput").files && el("photoInput").files[0];
+  el("photoInput").value = "";
+  if(!f) return;
+  if(!ensureSession()) return;
+  var url = URL.createObjectURL(f);
+  var img = new Image();
+  img.onload = function(){
+    var maxSide = 1024;
+    var scale = Math.min(1, maxSide/Math.max(img.naturalWidth, img.naturalHeight));
+    var canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.naturalWidth*scale);
+    canvas.height = Math.round(img.naturalHeight*scale);
+    var ctx = canvas.getContext("2d", {willReadFrequently:true});
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    var thumb = "";
+    try{ thumb = canvas.toDataURL("image/jpeg", 0.72); }catch(e){}
+    processCapturedImage(canvas, thumb);
+    URL.revokeObjectURL(url);
+    el("camMsg").textContent = "Đã nhận ảnh từ máy ảnh của điện thoại. Ảnh trên là ảnh vừa chụp — kiểm tra đáp án máy đọc rồi bấm xác nhận bên dưới.";
+  };
+  img.onerror = function(){ URL.revokeObjectURL(url); el("scanResult").innerHTML = '<div class="errbox">Không đọc được ảnh vừa chụp. Thầy chụp lại.</div>'; };
+  img.src = url;
 });
 function showScanConfirm(stu, letter){
   var box = el("scanConfirm");
@@ -1353,23 +1476,88 @@ el("scanConfirm").addEventListener("click", function(e){
     el("scanResult").innerHTML = '<p class="hint">Đã bỏ qua thẻ này. Chọn học sinh khác hoặc chụp lại.</p>';
   }
 });
-function detectOrientation(canvas){
-  // Downscale for speed, threshold dark pixels, find card bbox, compare corner darkness.
-  var small = document.createElement("canvas");
-  small.width = 160; small.height = 120;
-  var sctx = small.getContext("2d", {willReadFrequently:true});
-  sctx.drawImage(canvas, 0, 0, 160, 120);
-  var data;
-  try{ data = sctx.getImageData(0,0,160,120).data; }catch(err){ return null; }
-  var dark = [];
-  for(var y=0;y<120;y++){
-    for(var x=0;x<160;x++){
-      var i=(y*160+x)*4;
-      var lum = 0.299*data[i]+0.587*data[i+1]+0.114*data[i+2];
-      if(lum<110) dark.push([x,y]);
-    }
+function otsuThreshold(lum, total){
+  var hist = new Array(256).fill(0);
+  for(var i=0;i<total;i++) hist[lum[i]]++;
+  var sum = 0;
+  for(var t=0;t<256;t++) sum += t*hist[t];
+  var sumB = 0, wB = 0, maxVar = -1, thr = 110;
+  for(var t2=0;t2<256;t2++){
+    wB += hist[t2];
+    if(wB===0) continue;
+    var wF = total - wB;
+    if(wF===0) break;
+    sumB += t2*hist[t2];
+    var mB = sumB/wB, mF = (sum-sumB)/wF;
+    var diff = mB-mF;
+    var varBetween = wB*wF*diff*diff;
+    if(varBetween>maxVar){ maxVar = varBetween; thr = t2; }
   }
-  if(dark.length<250) return null;
+  return Math.max(60, Math.min(180, thr));
+}
+function cornerScoresFromLum(lum, W, H, thr){
+  // Corner zones inset slightly so the card border (dark on all 4 sides)
+  // does not dominate; the large solid marker fills most of its zone.
+  function zone(x0f, y0f, x1f, y1f){
+    var total=0, d=0;
+    var x0=Math.round(W*x0f), x1=Math.round(W*x1f), y0=Math.round(H*y0f), y1=Math.round(H*y1f);
+    for(var y=y0;y<y1;y++) for(var x=x0;x<x1;x++){ total++; if(lum[y*W+x]<=thr) d++; }
+    return total? d/total : 0;
+  }
+  return {
+    TR: zone(0.70, 0.02, 0.98, 0.30),
+    BR: zone(0.70, 0.70, 0.98, 0.98),
+    BL: zone(0.02, 0.70, 0.30, 0.98),
+    TL: zone(0.02, 0.02, 0.30, 0.30)
+  };
+}
+function pickCorner(scores){
+  var order = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
+  var best = order[0], second = order[1];
+  window.__lastScores = scores;
+  // Relative test: the marker corner must stand out. The old 13% marker
+  // with a white hole only reaches ~0.2 in its zone, so the absolute
+  // bar is low on purpose; the gap to the runner-up is what decides.
+  if(scores[best] < 0.16) return null;
+  if((scores[best]-scores[second]) < 0.05) return null;
+  var map = {TR:{letter:"A", name:"trên–phải"}, BR:{letter:"B", name:"dưới–phải"}, BL:{letter:"C", name:"dưới–trái"}, TL:{letter:"D", name:"trên–trái"}};
+  return {letter: map[best].letter, cornerName: map[best].name, confident: (scores[best]-scores[second])>0.15 && scores[best]>0.28, scores: scores};
+}
+function detectOrientation(sourceCanvas){
+  // 1) Centre-square crop = the square guide on screen. The card is
+  // supposed to fill this square, so its corners land in the corner
+  // zones regardless of what is behind the card.
+  var W = sourceCanvas.width, H = sourceCanvas.height;
+  var side = Math.round(Math.min(W, H) * 0.92);
+  // For the 640x480 video canvas the guide is 68% of the width:
+  if(W===640 && H===480) side = Math.round(W*0.68);
+  var sx = Math.round((W-side)/2), sy = Math.round((H-side)/2);
+  var small = document.createElement("canvas");
+  small.width = 160; small.height = 160;
+  var sctx = small.getContext("2d", {willReadFrequently:true});
+  sctx.drawImage(sourceCanvas, sx, sy, side, side, 0, 0, 160, 160);
+  var data;
+  try{ data = sctx.getImageData(0,0,160,160).data; }catch(err){ return null; }
+  var lum = new Uint8Array(160*160);
+  for(var i=0;i<160*160;i++) lum[i] = Math.round(0.299*data[i*4]+0.587*data[i*4+1]+0.114*data[i*4+2]);
+  var thr = otsuThreshold(lum, lum.length);
+  var scores = cornerScoresFromLum(lum, 160, 160, thr);
+  var det = pickCorner(scores);
+  if(det){ det.threshold = thr; return det; }
+  // 2) Fallback: whole frame, card bounding box from dark pixels.
+  // Helps when the card is smaller than the guide (held too far away).
+  var full = document.createElement("canvas");
+  full.width = 160; full.height = 120;
+  var fctx = full.getContext("2d", {willReadFrequently:true});
+  fctx.drawImage(sourceCanvas, 0, 0, 160, 120);
+  var fdata;
+  try{ fdata = fctx.getImageData(0,0,160,120).data; }catch(err2){ return null; }
+  var flum = new Uint8Array(160*120);
+  for(var j=0;j<160*120;j++) flum[j] = Math.round(0.299*fdata[j*4]+0.587*fdata[j*4+1]+0.114*fdata[j*4+2]);
+  var fthr = otsuThreshold(flum, flum.length);
+  var dark = [];
+  for(var y=0;y<120;y++) for(var x=0;x<160;x++) if(flum[y*160+x]<=fthr) dark.push([x,y]);
+  if(dark.length<200) return null;
   dark.sort(function(a,b){return a[0]-b[0]});
   var x0 = dark[Math.floor(dark.length*0.03)][0], x1 = dark[Math.floor(dark.length*0.97)][0];
   dark.sort(function(a,b){return a[1]-b[1]});
@@ -1378,29 +1566,24 @@ function detectOrientation(canvas){
   if(w<50 || h<40) return null;
   function cornerRatio(cx0, cy0){
     var total=0, d=0;
-    var rx0 = Math.round(x0 + w*cx0), rx1 = Math.round(x0 + w*(cx0+0.18));
-    var ry0 = Math.round(y0 + h*cy0), ry1 = Math.round(y0 + h*(cy0+0.18));
-    for(var yy=ry0; yy<=ry1; yy++){
-      for(var xx=rx0; xx<=rx1; xx++){
-        if(xx<0||yy<0||xx>=160||yy>=120) continue;
-        var j=(yy*160+xx)*4;
-        var lum2 = 0.299*data[j]+0.587*data[j+1]+0.114*data[j+2];
-        total++; if(lum2<110) d++;
-      }
+    var rx0 = Math.round(x0 + w*cx0), rx1 = Math.round(x0 + w*(cx0+0.22));
+    var ry0 = Math.round(y0 + h*cy0), ry1 = Math.round(y0 + h*(cy0+0.22));
+    for(var yy=ry0; yy<=ry1; yy++) for(var xx=rx0; xx<=rx1; xx++){
+      if(xx<0||yy<0||xx>=160||yy>=120) continue;
+      total++; if(flum[yy*160+xx]<=fthr) d++;
     }
     return total? d/total : 0;
   }
-  var scores = {
-    TR: cornerRatio(0.80, 0.06),
-    BR: cornerRatio(0.80, 0.76),
-    BL: cornerRatio(0.02, 0.76),
-    TL: cornerRatio(0.02, 0.06)
+  var fscores = {
+    TR: cornerRatio(0.76, 0.04),
+    BR: cornerRatio(0.76, 0.74),
+    BL: cornerRatio(0.02, 0.74),
+    TL: cornerRatio(0.02, 0.04)
   };
-  var order = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
-  var best = order[0], second = order[1];
-  if(scores[best] < 0.45) return null;
-  var map = {TR:{letter:"A", name:"trên–phải"}, BR:{letter:"B", name:"dưới–phải"}, BL:{letter:"C", name:"dưới–trái"}, TL:{letter:"D", name:"trên–trái"}};
-  return {letter: map[best].letter, cornerName: map[best].name, confident: (scores[best]-scores[second])>0.15, scores: scores};
+  var det2 = pickCorner(fscores);
+  if(det2){ det2.threshold = fthr; return det2; }
+  window.__lastScores = scores;
+  return null;
 }
 
 /* ================= Results ================= */
